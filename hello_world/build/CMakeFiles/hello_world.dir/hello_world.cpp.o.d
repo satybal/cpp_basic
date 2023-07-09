@@ -1,7 +1,8 @@
 CMakeFiles/hello_world.dir/hello_world.cpp.o: \
- /home/timur/CPP_basic/hello_world/hello_world.cpp \
- /usr/include/stdc-predef.h /home/timur/CPP_basic/hello_world/example.h \
- /home/timur/CPP_basic/hello_world/move_me_out.h \
+ /home/timur/CPP_basic/cpp_basic/hello_world/hello_world.cpp \
+ /usr/include/stdc-predef.h \
+ /home/timur/CPP_basic/cpp_basic/hello_world/example.h \
+ /home/timur/CPP_basic/cpp_basic/hello_world/move_me_out.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

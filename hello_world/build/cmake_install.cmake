@@ -1,4 +1,4 @@
-# Install script for directory: /home/timur/CPP_basic/hello_world
+# Install script for directory: /home/timur/CPP_basic/cpp_basic/hello_world
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/timur/CPP_basic/hello_world/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/timur/CPP_basic/cpp_basic/hello_world/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

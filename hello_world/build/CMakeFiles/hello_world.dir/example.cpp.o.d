@@ -1,6 +1,8 @@
 CMakeFiles/hello_world.dir/example.cpp.o: \
- /home/timur/CPP_basic/hello_world/example.cpp /usr/include/stdc-predef.h \
- /home/timur/CPP_basic/hello_world/example.h /usr/include/c++/11/iostream \
+ /home/timur/CPP_basic/cpp_basic/hello_world/example.cpp \
+ /usr/include/stdc-predef.h \
+ /home/timur/CPP_basic/cpp_basic/hello_world/example.h \
+ /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \

@@ -1,17 +1,27 @@
-#include <iostream>
-
+#include <random_value.h>
 #include <cstdlib>
+#include <iostream>
 #include <ctime>
 
-int main() {
-
-	const int max_value = 100;
-
+int random_value(int level = 1, int max = 10) {
 	std::srand(std::time(nullptr)); // use current time as seed for random generator
+	
+	if (max != 10) { return std::rand() % max; }
 
-	const int random_value = std::rand() % 100;
+	int max_value;
 
-	std::cout << random_value << std::endl;
+	if (level == 2) {
+		std::cout << "Guess the number between 0 and 49";
+		max_value = 50;
+	}
+	else if (level == 3) {
+		std::cout << "Guess the number between 0 and 99";
+		max_value = 100;
+	}
+	else {
+		std::cout << "Guess the number between 0 and 9";
+		max_value = 10;
+	}
 
-	return 0;
+	return std::rand() % max_value;
 }

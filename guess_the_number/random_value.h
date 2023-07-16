@@ -1,0 +1,1 @@
+int random_value(int level = 1, int max = 10);

@@ -1,2 +1,3 @@
 #pragma once
-int check_value(int target_value);
+
+int check_value(const int target_value);

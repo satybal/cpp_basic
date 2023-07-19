@@ -1,66 +1,75 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <high_scores.h>
+#include <filesystem>
+#include "high_scores.h"
 
-void save_results(const std::string &user_name, int attempts) {
+const std::string high_scores_filename = "high_scores.txt";
+const std::string temp_filename = "temp.txt";
 
-	const std::string high_scores_filename = "high_scores.txt";
+void save_results(const std::string &user_name, const int attempts) {
+	std::filesystem::copy(high_scores_filename, temp_filename, std::filesystem::copy_options::overwrite_existing);
 
-	// // Ask about name
-	// std::cout << "Hi! Enter your name, please:" << std::endl;
-	// std::string user_name;
-	// std::cin >> user_name;
-
-	// // Get the last high score
-	// std::cout << "Enter your high score:" << std::endl;
-	// int attempts_count = 0;
-	// std::cin >> attempts_count;
-	// if (std::cin.fail()) {
-	// 	std::cout << "Bad value!" << std::endl;
-	// 	return -1;
-	// }
-
-	// Write new high score to the records table
-	{
-		// We should open the output file in the append mode - we don't want
-		// to erase previous results.
-		std::ofstream out_file{high_scores_filename, std::ios_base::app};
-		if (!out_file.is_open()) {
-			std::cout << "Failed to open file for write: " << high_scores_filename << "!" << std::endl;
+	{  // add new record 
+		std::ofstream out_file {high_scores_filename, std::ios_base::trunc};
+		std::ifstream in_file {temp_filename};
+		
+		if (!out_file.is_open() || !in_file.is_open()) {
+			std::cout << "Failed to open file: " << high_scores_filename << "!" << std::endl;
 		}
 
-		// Append new results to the table:
-		out_file << user_name << ' ';
-		out_file << attempts;
-		out_file << std::endl;
-	} // end of score here just to mark end of the logic block of code
+		std::string current_user;
+		int user_record;
+		bool user_exists = false;
 
-	// Read the high score file and print all results
+		while (true) {
+			in_file >> current_user;
+			in_file >> user_record;
+			in_file.ignore();
+
+			if (in_file.fail() && user_exists) break; // user is already exist in the table
+													  // and file overwritten
+			
+			else if (in_file.fail()) { // adding new user in the table
+				out_file << user_name << ' ' << attempts << std::endl;
+
+				break;
+			} else {  // rewriting line by line checking user record
+		    	out_file << current_user << ' ';
+
+				if (current_user == user_name) {
+			     	out_file << (user_record < attempts ? user_record : attempts);
+				    user_exists = true;
+				}
+				else out_file << user_record;
+
+		    	out_file << std::endl;
+			}
+		}
+	}
+	show_high_scores();
+}
+
+void show_high_scores() {
 	{
-		std::ifstream in_file{high_scores_filename};
+		std::ifstream in_file {high_scores_filename};
 		if (!in_file.is_open()) {
 			std::cout << "Failed to open file for read: " << high_scores_filename << "!" << std::endl;
 		}
 
+		int score;
+		std::string usr;
+
 		std::cout << "High scores table:" << std::endl;
 
-		std::string username;
-		int high_score = 0;
 		while (true) {
-			// Read the username first
-			in_file >> username;
-			// Read the high score next
-			in_file >> high_score;
-			// Ignore the end of line symbol
+			in_file >> usr;
+			in_file >> score;
 			in_file.ignore();
 
-			if (in_file.fail()) {
-				break;
-			}
+			if (in_file.fail()) break;
 
-			// Print the information to the screen
-			std::cout << username << '\t' << high_score << std::endl;
+			std::cout << usr << " " << score << std::endl;
 		}
 	}
 }

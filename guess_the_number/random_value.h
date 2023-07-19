@@ -1,1 +1,3 @@
-int random_value(int level = 1, int max = 10);
+#pragma once 
+
+int random_value(const int max_value);

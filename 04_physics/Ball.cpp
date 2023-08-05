@@ -7,8 +7,8 @@
  */
 void Ball::setVelocity(const Velocity& velocity) {
     // TODO: место для доработки
-    vx = velocity.vector().x;
-    vy = velocity.vector().y;
+    vx_vy.x = velocity.vector().x;
+    vx_vy.y = velocity.vector().y;
 }
 
 /**
@@ -16,7 +16,7 @@ void Ball::setVelocity(const Velocity& velocity) {
  */
 Velocity Ball::getVelocity() const {
     // TODO: место для доработки
-    return Velocity(Point(vx, vy));
+    return Velocity(Point(vx_vy.x, vx_vy.y));
 }
 
 /**
@@ -38,8 +38,8 @@ void Ball::draw(Painter& painter) const {
  */
 void Ball::setCenter(const Point& center) {
     // TODO: место для доработки
-    x = center.x;
-    y = center.y;
+    x_y.x = center.x;
+    x_y.y = center.y;
 }
 
 /**
@@ -47,7 +47,7 @@ void Ball::setCenter(const Point& center) {
  */
 Point Ball::getCenter() const {
     // TODO: место для доработки
-    return {x, y};
+    return x_y;
 }
 
 /**

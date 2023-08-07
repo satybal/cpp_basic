@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 
 class Color {
   public:
@@ -13,3 +14,11 @@ class Color {
     double g{};
     double b{};
 };
+
+inline std::ifstream &operator>>(std::ifstream &stream, Color &m_vector) {
+  double r, g, b;
+  stream >> r >> g >> b;
+  m_vector = Color(r, g, b);
+  
+  return stream;
+}

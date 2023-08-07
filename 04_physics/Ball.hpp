@@ -8,13 +8,13 @@ public:
     Ball(
         Point x_y, Point vx_vy, 
         double radius, 
-        double red, double green, double blue,
+        Color r_g_b,
         bool isCollidable
-    ) : x_y{x_y}, vx_vy{vx_vy}, radius{radius}, red{red}, green{green}, blue{blue}, isCollidable{isCollidable} {};
+    ) : x_y{x_y}, vx_vy{vx_vy}, radius{radius}, r_g_b{r_g_b}, isCollidable{isCollidable} {};
 
     Point x_y, vx_vy;
     double radius;
-    double red, green, blue;
+    Color r_g_b;
     bool isCollidable;
 
     void setVelocity(const Velocity& velocity);

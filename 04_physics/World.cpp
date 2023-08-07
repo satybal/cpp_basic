@@ -35,29 +35,20 @@ World::World(const std::string& worldFilePath) {
      */
     Point x_y;
     Point vx_vy;
-    
-    double red;
-    double green;
-    double blue;
-
     double radius;
+    Color r_g_b;
     bool isCollidable;
-
-    // double x;
-    // double y;
-    // double vx;
-    // double vy;
-
 
     // Здесь не хватает обработки ошибок, но на текущем
     // уровне прохождения курса нас это устраивает
     while (stream.peek(), stream.good()) {
-        stream >> x_y >> vx_vy;
         // Читаем координаты центра шара (x, y) и вектор
         // его скорости (vx, vy)
+        stream >> x_y >> vx_vy;
         // stream >> x >> y >> vx >> vy;
         // Читаем три составляющие цвета шара
-        stream >> red >> green >> blue;
+        //stream >> red >> green >> blue;
+        stream >> r_g_b;
         // Читаем радиус шара
         stream >> radius;
         // Читаем свойство шара isCollidable, которое
@@ -70,7 +61,7 @@ World::World(const std::string& worldFilePath) {
         // Здесь не хватает самого главного - создания
         // объекта класса Ball со свойствами, прочитанными
         // выше, и его помещения в контейнер balls
-        Ball ball(x_y, vx_vy, radius, red, green, blue, isCollidable);
+        Ball ball(x_y, vx_vy, radius, r_g_b, isCollidable);
 
         // После того как мы каким-то образом
         // сконструируем объект Ball ball;

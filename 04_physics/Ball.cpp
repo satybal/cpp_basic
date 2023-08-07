@@ -29,7 +29,7 @@ Velocity Ball::getVelocity() const {
  */
 void Ball::draw(Painter& painter) const {
     // TODO: место для доработки
-    painter.draw(getCenter(), getRadius(), Color(red, green, blue));
+    painter.draw(getCenter(), getRadius(), Color(r_g_b));
 }
 
 /**

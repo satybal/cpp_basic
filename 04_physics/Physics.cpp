@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include "Dust.h"
 
 double dot(const Point& lhs, const Point& rhs) {
     return lhs.x * rhs.x + lhs.y * rhs.y;
@@ -11,16 +12,16 @@ void Physics::setWorldBox(const Point& topLeft, const Point& bottomRight) {
     this->bottomRight = bottomRight;
 }
 
-void Physics::update(std::vector<Ball>& balls, const size_t ticks) const {
+void Physics::update(std::vector<Ball>& balls, std::vector<Dust>& dusts, const size_t ticks) const {
 
     for (size_t i = 0; i < ticks; ++i) {
-        move(balls);
+        move(balls, dusts);
         collideWithBox(balls);
-        collideBalls(balls);
+        collideBalls(balls, dusts);
     }
 }
 
-void Physics::collideBalls(std::vector<Ball>& balls) const {
+void Physics::collideBalls(std::vector<Ball>& balls, std::vector<Dust>& dusts) const {
     for (auto a = balls.begin(); a != balls.end(); ++a) {
         for (auto b = std::next(a); b != balls.end(); ++b) {
             const double distanceBetweenCenters2 =
@@ -30,6 +31,25 @@ void Physics::collideBalls(std::vector<Ball>& balls) const {
                 collisionDistance * collisionDistance;
 
             if ((distanceBetweenCenters2 < collisionDistance2) && a->isCollidable && b->isCollidable) {
+                /* 
+                        Считаем точку соприкосновения допуская что шары одинаковые
+                   т.к. брызги более актуальны для смайлика а там почти все шары
+                   одного размера, да и лень вспоминать векторную алгебру
+                   на задачу не влияет.
+                        Добавляем брызги в точку соприкосновения.
+                */
+                const Point collisionPoint = b->getCenter() - (b->getCenter() - a->getCenter()) / 2.;
+               
+                const std::vector<Point> dustDirections {
+                    {1, 0}, {0.7, 0.7}, {0, 1}, {-0.7, 0.7},
+                    {-1, 0}, {-0.7, -0.7}, {0, -1}, {0.7, -0.7}
+                };
+
+                for (Point dustDirection : dustDirections) {
+                    Dust dust(collisionPoint, dustDirection);
+                    dusts.push_back(dust);
+                }
+                
                 processCollision(*a, *b, distanceBetweenCenters2);
             }
         }
@@ -59,11 +79,22 @@ void Physics::collideWithBox(std::vector<Ball>& balls) const {
     }
 }
 
-void Physics::move(std::vector<Ball>& balls) const {
+void Physics::move(std::vector<Ball>& balls, std::vector<Dust> &dusts) const {
     for (Ball& ball : balls) {
         Point newPos =
             ball.getCenter() + ball.getVelocity().vector() * timePerTick;
         ball.setCenter(newPos);
+    }
+
+    // auto newEnd = remove_if(dusts.begin(), dusts.end(), [](Dust dust) {
+    //     return dust.getSpentTimes() > dust.getTotalTimes();
+    // });
+
+    // dusts.erase(newEnd, dusts.end());
+
+    for (Dust& dust : dusts) {
+        dust.incrementDust();
+        dust.setCenter(dust.getCenter() + dust.vx_vy / 3.);
     }
 }
 

@@ -6,6 +6,7 @@
 class Dust {
 public:
     Dust() = default;
+
     Dust(Point x_y, Point vx_vy) : x_y{x_y}, vx_vy{vx_vy} {};
 
     Point x_y, vx_vy;
@@ -18,6 +19,6 @@ public:
     int getSpentTimes();
 
 private:
-    const int totalTimes = 2000;
+    int totalTimes = 300;
     int spentTimes = 0;
 };

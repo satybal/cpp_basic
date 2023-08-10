@@ -86,15 +86,18 @@ void Physics::move(std::vector<Ball>& balls, std::vector<Dust> &dusts) const {
         ball.setCenter(newPos);
     }
 
-    // auto newEnd = remove_if(dusts.begin(), dusts.end(), [](Dust dust) {
-    //     return dust.getSpentTimes() > dust.getTotalTimes();
-    // });
-
-    // dusts.erase(newEnd, dusts.end());
+    auto it = dusts.begin();
+    while (it != dusts.end()) {
+        if (it -> getSpentTimes() > it -> getTotalTimes()) {
+            it = dusts.erase(it);
+        } else {
+            it++;
+        }
+    }
 
     for (Dust& dust : dusts) {
         dust.incrementDust();
-        dust.setCenter(dust.getCenter() + dust.vx_vy / 3.);
+        dust.setCenter(dust.getCenter() + dust.vx_vy / 2.);
     }
 }
 

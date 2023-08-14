@@ -112,8 +112,13 @@ class Pct95;
 //pct value
 class Pct90 : public Std {
 public:
-	
+
+	virtual double getAlpha() const {
+		return 0.9;
+	}
+
 	double eval() const override {
+		const double alpha = getAlpha();
 
 		std::vector<double> vecCopy = vec;
 		std::sort(vecCopy.begin(), vecCopy.end());
@@ -136,40 +141,20 @@ public:
 	const char * name() const override {
 		return "pct90";
 	}
-
-private:
-	const double alpha = 0.9;
 };
 
 
-// // pct95 value
+// pct95 value
 class Pct95 : public Pct90 {
 public:
-	double eval() const override {
 
-		std::vector<double> vecCopy = vec;
-		std::sort(vecCopy.begin(), vecCopy.end());
-
-		auto N = size(vecCopy);	               
-
-		auto K = int(alpha * (N - 1));
-
-		auto aN = N * alpha;
-
-		if (fabs(K + 1 - aN) < (1 / N)) {
-			return (vecCopy[K] + vecCopy[K+1]) / 2;
-		} else if ((K + 1) < aN) {
-			return vecCopy[K+1];
-		} else {
-			return vecCopy[K];
-		}
+	double getAlpha() const override {
+		return 0.95;
 	}
-
+	
 	const char * name() const override {
 		return "pct95";
 	}
-private:
-	const double alpha = 0.95;
 };
 
 int main() {

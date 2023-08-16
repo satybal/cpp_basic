@@ -4,6 +4,7 @@
 #include <cmath>
 #include <numeric>
 #include <algorithm>
+#include <cstring>
 
 class IStatistics {
 public:
@@ -40,7 +41,7 @@ private:
 // maximum value
 class Max : public IStatistics {
 public:
-	Max() : m_max{std::numeric_limits<double>::min()} {}
+	Max() : m_max{std::numeric_limits<double>::lowest()} {}
 
 	void update(double next) override {
 		if (next > m_max) {
@@ -84,9 +85,7 @@ private:
 class Std : public IStatistics {
 public:
 
-	std::vector<double> vec;
-
-	void update(double next) final {
+	void update(double next) override {
 		vec.push_back(next);
 	}
 
@@ -105,56 +104,53 @@ public:
 	const char * name() const override {
 		return "std";
 	}
+private:
+	std::vector<double> vec;
 };
 
-class Pct95;
-
 //pct value
-class Pct90 : public Std {
+class Pct : public IStatistics {
 public:
 
-	virtual double getAlpha() const {
-		return 0.9;
+	Pct(const double alpha): alpha{alpha / 100.} {}
+
+	void update(double next) override {
+		vec.push_back(next);
 	}
 
 	double eval() const override {
-		const double alpha = getAlpha();
 
-		std::vector<double> vecCopy = vec;
-		std::sort(vecCopy.begin(), vecCopy.end());
-
-		auto N = size(vecCopy);	               
+		auto N = size(vec);	               
 
 		auto K = int(alpha * (N - 1));
 
 		auto aN = N * alpha;
 
 		if (fabs(K + 1 - aN) < (1 / N)) {
-			return (vecCopy[K] + vecCopy[K+1]) / 2;
+			return (k_value(K) + k_value(K+1)) / 2;
 		} else if ((K + 1) < aN) {
-			return vecCopy[K+1];
+			return k_value(K+1);
 		} else {
-			return vecCopy[K];
+			return k_value(K);
 		}
 	}
 
 	const char * name() const override {
-		return "pct90";
+		const char* percent = std::to_string(int(alpha * 100)).c_str();
+		char* result = new char[6];
+		strcpy(result, "pct");
+		strcat(result, percent);
+		return result;
 	}
-};
+private:
 
-
-// pct95 value
-class Pct95 : public Pct90 {
-public:
-
-	double getAlpha() const override {
-		return 0.95;
+	double k_value(const int k) const {
+		std::nth_element(vec.begin(), vec.begin() + k, vec.end());
+		return vec[k];
 	}
-	
-	const char * name() const override {
-		return "pct95";
-	}
+
+	const double alpha;
+	std::vector<double> mutable vec;
 };
 
 int main() {
@@ -166,8 +162,8 @@ int main() {
 	statistics[1] = new Max{};
 	statistics[2] = new Mean{};
 	statistics[3] = new Std{};
-	statistics[4] = new Pct90{};
-	statistics[5] = new Pct95{};
+	statistics[4] = new Pct{90};
+	statistics[5] = new Pct{95};
 
 	double val = 0;
 	while (std::cin >> val) {

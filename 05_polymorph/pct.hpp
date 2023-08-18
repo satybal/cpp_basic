@@ -3,10 +3,9 @@
 
 class Pct : public IStatistics {
 public:
-	Pct(const double alpha): alpha{alpha / 100.} {}
-    ~Pct() {
-        delete[] result;
-    }
+	Pct(const double percentile): 
+		alpha{percentile / 100.},
+		m_name{"pct" + std::to_string(int(percentile))} {}
 	
 	void update(double next) override;
 	double eval() const override;
@@ -16,5 +15,5 @@ private:
 	double k_value(const int k) const;
 	const double alpha;
 	std::vector<double> mutable vec;
-    char* result = new char[6];
+	const std::string m_name;
 };

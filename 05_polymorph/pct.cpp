@@ -22,10 +22,7 @@ double Pct::eval() const {
 }
 
 const char * Pct::name() const {
-	const char* percent = std::to_string(int(alpha * 100)).c_str();
-	strcpy(result, "pct");
-	strcat(result, percent);
-	return result;
+	return m_name.c_str();
 }
 double Pct::k_value(const int k) const {
 	std::nth_element(vec.begin(), vec.begin() + k, vec.end());

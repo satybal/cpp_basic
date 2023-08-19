@@ -15,11 +15,11 @@ public:
     // };
 
     T *begin() {
-        return head;
+        return data;
     }
 
     T *end() {
-        return (head + m_size + 1);
+        return (data + m_size + 1);
     }
 
     T &operator[](size_t ind) {
@@ -32,10 +32,9 @@ public:
         return *place;
     }
 
-    void print() {
-        std::cout << std::endl;
+    void print() { // PRINT
         for (size_t i=0; i < m_size; i++) {
-            std::cout << head[i] << " ";
+            std::cout << data[i] << " ";
         }
         std::cout << std::endl;
     }
@@ -48,20 +47,54 @@ public:
         } else return false;
     }
 
-    void push_back(const T &value) {
+    void push_back(const T &value) { // PUSH BACK
         if (space_filled()) {
-            T *new_head = new T[total_space];
+            T *new_data = new T[total_space];
 
             for (size_t i = 0; i < m_size; i++) {
-                new_head[i] = head[i];
+                new_data[i] = data[i];
             }
         
-            new_head[m_size] = value;
+            new_data[m_size] = value;
 
-            delete[] head;
-            head = new_head;
+            delete[] data;
+            data = new_data;
         } else {
-            head[m_size] = value;
+            data[m_size] = value;
+        }
+
+        m_size++;
+    }
+
+    void erase(size_t idx) { // ERASE
+        m_size--;
+
+        for (size_t i = idx; i < m_size; i++) {
+            data[i] = data[i+1];
+        }
+    }
+
+    void insert(size_t idx, const T &value) { // INSERT
+        if (space_filled()) {
+            T *new_data = new T[total_space];
+            
+            for (size_t i = m_size; i > idx; i--) {
+                new_data[i] = data[i-1];
+            }
+
+            new_data[idx] = value;
+
+            for (size_t i = 0; i < idx - 1; i++) {
+                new_data[i] = data[i];
+            }
+
+            delete[] data;
+            data = new_data;
+        } else {
+            for (size_t i = m_size; i > idx; i--) {
+                data[i] = data[i-1];
+            }
+            data[idx] = value;
         }
 
         m_size++;
@@ -72,5 +105,5 @@ public:
 private:
     size_t m_size = 0;
     size_t total_space = 0; // total mem x2 to real used
-    T *head = new T[m_size];
+    T *data = new T[m_size];
 };

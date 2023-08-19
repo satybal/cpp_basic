@@ -5,63 +5,75 @@ class Container {
 public:
     Container() {}
 
-    // struct Iterator {
-    // public:
-    //     friend class Container;
-    //     Iterator(int *ptr): m_ptr(ptr) {}
+    struct Iterator {
+    public:
+        friend class Container;
+        Iterator(T *ptr): m_ptr(ptr) {}
 
-    // private:
-    //     int *m_ptr;        
-    // };
+    private:
+        T *m_ptr;        
+    };
 
-    // int *begin() {
-    //     return address;
-    // }
+    T *begin() {
+        return pointer;
+    }
 
-    // int *end() {
-    //     return address + m_size;
-    // }
-
-    const T &operator[] (size_t ind) const {
-        // int ptr = *address;
-        // ptr += ind;
-        // return *ptr;
-        return *(pointer + ind);
+    T *end() {
+        return pointer + m_size;
     }
 
     T &operator[](size_t ind) {
-        // int ptr = *address;
-        // ptr += ind;
-        // return ptr;
-               // std::cout << "non const " << (address + ind) << " " << *(address + ind) << std::endl;
+        auto place = this->begin() + ind;
+        return *place;
+    }
 
-        return *(pointer + ind);
+    const T &operator[](size_t ind) const {
+        auto place = this->begin() + ind;
+        return *place;
     }
 
     void print() {
         std::cout << std::endl;
         for (size_t i=0; i < m_size; i++) {
-            std::cout << *(pointer + i) << " ";
+            std::cout << pointer[i] << " ";
         }
         std::cout << std::endl;
     }
 
     void push_back(T &&value) {
-        T *new_pointer = alloc.allocate((m_size + 1) * 2);
+        T *new_pointer = new T[(m_size + 1) * 2];
 
         for (size_t i = 0; i < m_size; i++) {
-            *(new_pointer + i) = *(pointer + i);
+            new_pointer[i] = pointer[i];
         }
 
-        *(new_pointer + m_size) = value;
+        new_pointer[m_size] = value;
 
         delete pointer;
         pointer = new_pointer;
+
         m_size++;
     }
 
+    void push_back(T &value) {
+        T *new_pointer = new T[(m_size + 1) * 2];
+
+        for (size_t i = 0; i < m_size; i++) {
+            new_pointer[i] = pointer[i];
+        }
+
+        new_pointer[m_size] = value;
+
+        delete[] pointer;
+        pointer = new_pointer;
+        
+        m_size++;
+    }
+
+    size_t size() { return m_size; }
+
 private:
-    std::allocator<T> alloc;
-    T *pointer = alloc.allocate(0);
     size_t m_size = 0;
+    //Iterator iter = new int[m_size];
+    T *pointer = new T[m_size];
 };

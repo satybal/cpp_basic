@@ -4,7 +4,7 @@ project(06.containers)
 
 add_executable(containers
     containers.cpp
-    seqContainer.hpp
+    listContainer.hpp
 )
 
 set_target_properties(containers PROPERTIES

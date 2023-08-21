@@ -1,5 +1,3 @@
-#include <iostream>
-
 namespace Sequence {
     template <typename T>
     class Container {

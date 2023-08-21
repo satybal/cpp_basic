@@ -1,10 +1,11 @@
-namespace SinglyDirectedList {
+namespace DoublyDirectedList {
 
     template <typename T>
     struct Node {
         Node() {}
 
         Node* next;
+        Node* prev;
         T value;
     };
 
@@ -24,7 +25,12 @@ namespace SinglyDirectedList {
                 return *this;
             }
 
-            bool operator!=(const iterator rhs) {
+            iterator &operator--() {
+                _node = _node->prev;
+                return *this;
+            }
+
+            bool operator!=(const iterator &rhs) {
                 return this->_node != rhs._node;
             }
 
@@ -38,6 +44,7 @@ namespace SinglyDirectedList {
 
         iterator begin() {
             iter._node = head;
+            
             return iter;
         }
 
@@ -66,7 +73,6 @@ namespace SinglyDirectedList {
 
             while (curr != nullptr) {
                 std::cout << curr->value << " ";
-
                 curr = curr->next;
             }
 
@@ -79,11 +85,15 @@ namespace SinglyDirectedList {
             new_node->value = value;
             new_node->next = nullptr;
 
+            if (m_size == 0) {
+                new_node->prev = nullptr;
+                head = new_node;
+            } else {
+                new_node->prev = tail;
+            }
+                
             tail->next = new_node;
             tail = new_node;
-
-            if (m_size == 0) 
-                head = new_node;
 
             m_size++;
         }
@@ -94,29 +104,31 @@ namespace SinglyDirectedList {
             m_size--;
 
             if (_cur->next) {
-                if (idx == 0)
+                if (_cur->prev) {
+                    _cur->prev->next = _cur->next;
+                    _cur->next->prev = _cur->prev;
+                } else {
+                    _cur->next->prev = nullptr;
                     head = _cur->next;
-                else {
-                    Node<T> *_prev = move_idx(idx - 1);
-                    _prev->next = _cur->next;
                 }
             } else {
-                Node<T> *_prev = move_idx(idx - 1);
-                _prev->next = nullptr;
+                _cur->prev->next = nullptr;
             }
         }
 
         void insert(size_t idx, T value) { //INSERT
             Node<T> *_curr = move_idx(idx);
-
             Node<T> *new_node = new Node<T>{};
-                new_node->next = _curr;
-                new_node->value = value;
+
+            new_node->next = _curr;
+            new_node->value = value;
+
             if (idx == 0) {
+                new_node->prev = nullptr;
                 head = new_node;
             } else {
-                Node<T> *_prev = move_idx(idx - 1);
-                _prev->next = new_node;
+                _curr->prev->next = new_node;
+                new_node->prev = _curr->prev;
             }
 
             m_size++;
@@ -130,4 +142,4 @@ namespace SinglyDirectedList {
         size_t m_size = 0;
         iterator iter;
     };
-} // end of SinglyDirectedList
+} // end of DoublyDirectedList

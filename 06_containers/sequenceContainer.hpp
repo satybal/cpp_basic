@@ -62,8 +62,8 @@ namespace Sequence {
         public:      
             friend class Container;  
 
-            bool operator<(const iterator &rhs) {
-                return this->ptr < rhs.ptr;
+            bool operator!=(const iterator &rhs) {
+                return this->ptr != rhs.ptr;
             }
 
             iterator &operator++() {
@@ -175,42 +175,4 @@ namespace Sequence {
         iterator iter;
     };
 
-    void test_container() {
-        Container<int> con;
-        
-        for (size_t i = 0; i < 10; ++i) { con.push_back(i); }
-        std::cout << "Printing sequence container" << std::endl;
-        con.print();
-        std::cout << std::endl;
-
-        std::cout << "Container size: " << con.size() << std::endl;
-        std::cout << std::endl;
-
-        std::cout << "Erase 3,5,7 elements:" << std::endl;
-        con.erase(6);
-        con.erase(4);
-        con.erase(2);
-        con.print();
-        std::cout << std::endl;
-
-        std::cout << "Adding 10 to the beginning" << std::endl;
-        con.insert(0, 10);
-        con.print();
-        std::cout << std::endl;
-
-        std::cout << "Adding 20 to the center" << std::endl;
-        con.insert(con.size() / 2, 20);
-        con.print();
-        std::cout << std::endl;
-
-        std::cout << "Adding 30 to the end" << std::endl;
-        con.push_back(30);
-        con.print();
-        std::cout << std::endl;
-
-        std::cout << "Printing with iterator" << std::endl;
-        for (auto i = con.begin(); i < con.end(); ++i) 
-            std::cout << *i << " ";
-        std::cout << std::endl;
-    }
 } // end of namespace Sequence

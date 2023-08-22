@@ -4,7 +4,7 @@ namespace SinglyDirectedList {
     struct Node {
         Node() {}
 
-        Node* next;
+        Node *next;
         T value;
     };
 
@@ -15,6 +15,27 @@ namespace SinglyDirectedList {
 
         Container() {}
 
+        // move ctcr
+        Container(Container &&other) {
+            m_size = other.m_size;
+            other.m_size = 0;
+
+            head = other.head;
+            other.head = nullptr;
+
+            tail = other.tail;
+            other.tail = nullptr;
+        }
+
+        // move assignment
+        Container &operator=(const Container &&rhs) {
+            this->head = std::move(rhs.head);
+            this->tail = std::move(rhs.tail);
+            this->m_size = std::move(rhs.m_size);
+
+            return *this;
+        }
+
         class iterator {
         public:
             friend class Container;
@@ -24,7 +45,7 @@ namespace SinglyDirectedList {
                 return *this;
             }
 
-            bool operator!=(const iterator rhs) {
+            bool operator!=(const iterator &rhs) {
                 return this->_node != rhs._node;
             }
 
@@ -33,7 +54,7 @@ namespace SinglyDirectedList {
             }
 
         private:
-            Node<T> *_node;
+            Node<T> *_node;;
         };
 
         iterator begin() {
@@ -66,7 +87,6 @@ namespace SinglyDirectedList {
 
             while (curr != nullptr) {
                 std::cout << curr->value << " ";
-
                 curr = curr->next;
             }
 
@@ -104,6 +124,7 @@ namespace SinglyDirectedList {
                 Node<T> *_prev = move_idx(idx - 1);
                 _prev->next = nullptr;
             }
+            delete _cur;
         }
 
         void insert(size_t idx, T value) { //INSERT

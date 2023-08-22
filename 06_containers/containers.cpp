@@ -3,8 +3,8 @@
 #include "sequenceContainer.hpp"
 #include "doublyListContainer.hpp"
 
-template <class T>
-void test_container(T con) {    
+template <class C>
+void test_container(C &con) {    
     std::cout << std::endl;
 
     for (size_t i = 0; i < 10; ++i)
@@ -47,17 +47,18 @@ void test_container(T con) {
   }
 
 int main() {
+
   std::cout << "DOUBLY DIRECTED LIST CONTAINER TEST" << std::endl;
   DoublyDirectedList::Container<int> con1;
   test_container(con1);
 
-  std::cout << "SINGLY DIRECTED LIST CONTAINER TEST" << std::endl;
-  SinglyDirectedList::Container<int> con2;
-  test_container(con2);
-
   std::cout << "SEQUENCE CONTAINER TEST" << std::endl;
   Sequence::Container<int> con3;
   test_container(con3);
+  
+  std::cout << "SINGLY DIRECTED LIST CONTAINER TEST" << std::endl;
+  SinglyDirectedList::Container<int> con2;
+  test_container(con2);
 
   return 0;
 }

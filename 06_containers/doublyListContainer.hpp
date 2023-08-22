@@ -16,6 +16,27 @@ namespace DoublyDirectedList {
 
         Container() {}
 
+        // move ctcr
+        Container(Container &&other) {
+            m_size = other.m_size;
+            other.m_size = 0;
+
+            head = other.head;
+            other.head = nullptr;
+
+            tail = other.tail;
+            other.tail = nullptr;
+        }
+
+        // move assignment
+        Container &operator=(const Container &&rhs) {
+            this->head = std::move(rhs.head);
+            this->tail = std::move(rhs.tail);
+            this->m_size = std::move(rhs.m_size);
+
+            return *this;
+        }
+
         class iterator {
         public:
             friend class Container;
@@ -39,12 +60,11 @@ namespace DoublyDirectedList {
             }
 
         private:
-            Node<T> *_node;
+            Node<T> *_node = nullptr;
         };
 
         iterator begin() {
-            iter._node = head;
-            
+            iter._node = head;          
             return iter;
         }
 
@@ -53,7 +73,7 @@ namespace DoublyDirectedList {
             return iter;
         }
 
-        Node<T> *move_idx(size_t idx) const {
+        Node<T> *move_idx(size_t idx) {
             Node<T> *_node = head;
 
             for (size_t i = 0; i < idx; ++i) {
@@ -114,6 +134,7 @@ namespace DoublyDirectedList {
             } else {
                 _cur->prev->next = nullptr;
             }
+            delete _cur;
         }
 
         void insert(size_t idx, T value) { //INSERT

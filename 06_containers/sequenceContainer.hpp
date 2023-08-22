@@ -2,40 +2,11 @@ namespace Sequence {
     template <typename T>
     class Container {
     public:
-        Container() {}
+        Container(): data{nullptr}, m_size{0}, total_space{0} {}
 
         ~Container() {
+            data = nullptr;
             delete[] data;
-        }
-
-        // copy constructor
-        Container(const Container &other) : Container{} {
-            m_size = other.m_size;
-            total_space = other.total_space;
-            data = new T[m_size];
-
-            for (size_t i = 0; i < m_size; i++) {
-                data[i] = other[i];
-            }
-        }
-
-        // copy assignment operator
-        Container &operator=(const Container &rhs) {
-            Container temp = rhs;
-
-            T * ptr = data;
-            data = temp.data;
-            temp.data = ptr;
-            
-            size_t size = m_size;
-            m_size = temp.m_size;
-            temp.m_size = size;
-
-            size_t total = total_space;
-            total_space = temp.total_space;
-            temp.total_space = total;
-
-            return *this;
         }
 
         // move constustor
@@ -52,8 +23,11 @@ namespace Sequence {
 
         // move assignment operator
         Container &operator=(const Container &&rhs) {
-            Container tmp{std::move(rhs)};
-            return *this = tmp;
+            this->data = rhs.data;
+            this->m_size = std::move(rhs.m_size);
+            this->total_space = std::move(rhs.total_space);
+
+            return *this;
         }
 
         class iterator {
@@ -73,7 +47,7 @@ namespace Sequence {
                 return *ptr;
             }
         private:
-            T *ptr;
+            T *ptr = nullptr;
         };
 
     
@@ -105,8 +79,8 @@ namespace Sequence {
         }
 
         bool space_filled() {
-            if (total_space < m_size) {
-                total_space = (m_size + 1) * 2;
+            if (total_space <= m_size) {
+                total_space = int((m_size + 1) * 1.5);
 
                 return true;
             } else return false;
@@ -167,9 +141,9 @@ namespace Sequence {
         size_t size() const { return m_size; }
 
     private:
-        size_t m_size = 0;
-        size_t total_space = 0; // total mem x2 to real used
-        T *data = new T[m_size];
+        size_t m_size;
+        size_t total_space; // total mem x2 to real used
+        T *data ;
         iterator iter;
     };
 

@@ -4,8 +4,15 @@ project(06.containers)
 
 add_executable(containers
     containers.cpp
-    singleListContainer.hpp
+
     sequenceContainer.hpp
+    #sequenceContainer.cpp
+
+    singleListContainer.hpp
+    #singleListContainer.cpp
+
+    doublyListContainer.hpp
+    #doublyListContainer.cpp
 )
 
 set_target_properties(containers PROPERTIES

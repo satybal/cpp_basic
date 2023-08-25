@@ -16,6 +16,12 @@ namespace DoublyDirectedList {
 
         Container() {}
 
+        ~Container() {
+            while (m_size > 0) {
+                this->erase(0);
+            }
+        }
+
         // move ctcr
         Container(Container &&other) {
             m_size = other.m_size;
@@ -107,7 +113,7 @@ namespace DoublyDirectedList {
 
             if (m_size == 0) {
                 new_node->prev = nullptr;
-                head = new_node;
+                head = tail = new_node;
             } else {
                 new_node->prev = tail;
             }
@@ -132,7 +138,7 @@ namespace DoublyDirectedList {
                     head = _node->next;
                 }
             } else {
-                _node->prev->next = nullptr;
+                _node->prev = nullptr;
             }
             delete _node;
         }

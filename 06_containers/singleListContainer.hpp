@@ -15,6 +15,12 @@ namespace SinglyDirectedList {
 
         Container() {}
 
+        ~Container() {
+            while (m_size > 0) {
+                this->erase(0);
+            }
+        }
+
         // move ctcr
         Container(Container &&other) {
             m_size = other.m_size;
@@ -99,11 +105,12 @@ namespace SinglyDirectedList {
             new_node->value = value;
             new_node->next = nullptr;
 
-            tail->next = new_node;
-            tail = new_node;
-
-            if (m_size == 0) 
-                head = new_node;
+            if (m_size == 0) {
+                head = tail = new_node;
+            } else {
+                tail->next = new_node;
+                tail = new_node;
+            }
 
             m_size++;
         }
@@ -113,16 +120,18 @@ namespace SinglyDirectedList {
 
             m_size--;
 
-            if (_node->next) {
-                if (idx == 0)
+            if (idx == 0) {
+                if (_node->next) {
                     head = _node->next;
-                else {
-                    Node<T> *_prev = move_idx(idx - 1);
-                    _prev->next = _node->next;
                 }
             } else {
                 Node<T> *_prev = move_idx(idx - 1);
-                _prev->next = nullptr;
+                if (_node->next) {
+                    _prev->next = _node->next;
+                } else {
+                    _prev->next = nullptr;
+                    tail = _prev;
+                }
             }
             delete _node;
         }

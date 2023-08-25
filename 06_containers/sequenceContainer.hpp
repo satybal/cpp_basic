@@ -5,7 +5,6 @@ namespace Sequence {
         Container(): data{nullptr}, m_size{0}, total_space{0} {}
 
         ~Container() {
-            data = nullptr;
             delete[] data;
         }
 
@@ -96,7 +95,7 @@ namespace Sequence {
             
                 new_data[m_size] = value;
 
-                delete[] data;
+                delete []data;
                 data = new_data;
             } else {
                 data[m_size] = value;

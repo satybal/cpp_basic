@@ -42,34 +42,34 @@ namespace DoublyDirectedList {
             friend class Container;
 
             iterator &operator++() {
-                _node = _node->next;
+                iter_node = iter_node->next;
                 return *this;
             }
 
             iterator &operator--() {
-                _node = _node->prev;
+                iter_node = iter_node->prev;
                 return *this;
             }
 
             bool operator!=(const iterator &rhs) {
-                return this->_node != rhs._node;
+                return this->iter_node != rhs.iter_node;
             }
 
             T operator*() {
-                return _node->value;
+                return iter_node->value;
             }
 
         private:
-            Node<T> *_node = nullptr;
+            Node<T> *iter_node = nullptr;
         };
 
         iterator begin() {
-            iter._node = head;          
+            iter.iter_node = head;          
             return iter;
         }
 
         iterator end() {
-            iter._node = tail->next;
+            iter.iter_node = tail->next;
             return iter;
         }
 
@@ -84,16 +84,16 @@ namespace DoublyDirectedList {
         }
 
         T &operator[](size_t idx) {
-            Node<T> *value = move_idx(idx);
-            return value->value;
+            Node<T> *_node = move_idx(idx);
+            return _node->value;
         }
 
         void print() const { // PRINT
-            Node<T> *curr = head;
+            Node<T> *_node = head;
 
-            while (curr != nullptr) {
-                std::cout << curr->value << " ";
-                curr = curr->next;
+            while (_node != nullptr) {
+                std::cout << _node->value << " ";
+                _node = _node->next;
             }
 
             std::cout << std::endl;
@@ -119,37 +119,37 @@ namespace DoublyDirectedList {
         }
 
         void erase(size_t idx) { //ERASE
-            Node<T> *_cur = move_idx(idx);
+            Node<T> *_node = move_idx(idx);
 
             m_size--;
 
-            if (_cur->next) {
-                if (_cur->prev) {
-                    _cur->prev->next = _cur->next;
-                    _cur->next->prev = _cur->prev;
+            if (_node->next) {
+                if (_node->prev) {
+                    _node->prev->next = _node->next;
+                    _node->next->prev = _node->prev;
                 } else {
-                    _cur->next->prev = nullptr;
-                    head = _cur->next;
+                    _node->next->prev = nullptr;
+                    head = _node->next;
                 }
             } else {
-                _cur->prev->next = nullptr;
+                _node->prev->next = nullptr;
             }
-            delete _cur;
+            delete _node;
         }
 
         void insert(size_t idx, T value) { //INSERT
-            Node<T> *_curr = move_idx(idx);
+            Node<T> *_node = move_idx(idx);
             Node<T> *new_node = new Node<T>{};
 
-            new_node->next = _curr;
+            new_node->next = _node;
             new_node->value = value;
 
             if (idx == 0) {
                 new_node->prev = nullptr;
                 head = new_node;
             } else {
-                _curr->prev->next = new_node;
-                new_node->prev = _curr->prev;
+                _node->prev->next = new_node;
+                new_node->prev = _node->prev;
             }
 
             m_size++;

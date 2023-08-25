@@ -41,29 +41,29 @@ namespace SinglyDirectedList {
             friend class Container;
 
             iterator &operator++() {
-                _node = _node->next;
+                iter_node = iter_node->next;
                 return *this;
             }
 
             bool operator!=(const iterator &rhs) {
-                return this->_node != rhs._node;
+                return this->iter_node != rhs.iter_node;
             }
 
             T operator*() {
-                return _node->value;
+                return iter_node->value;
             }
 
         private:
-            Node<T> *_node;;
+            Node<T> *iter_node;;
         };
 
         iterator begin() {
-            iter._node = head;
+            iter.iter_node = head;
             return iter;
         }
 
         iterator end() {
-            iter._node = tail->next;
+            iter.iter_node = tail->next;
             return iter;
         }
 
@@ -78,16 +78,16 @@ namespace SinglyDirectedList {
         }
 
         T &operator[](size_t idx) {
-            Node<T> *value = move_idx(idx);
-            return value->value;
+            Node<T> *_node = move_idx(idx);
+            return _node->value;
         }
 
         void print() const { // PRINT
-            Node<T> *curr = head;
+            Node<T> *_node = head;
 
-            while (curr != nullptr) {
-                std::cout << curr->value << " ";
-                curr = curr->next;
+            while (_node != nullptr) {
+                std::cout << _node->value << " ";
+                _node = _node->next;
             }
 
             std::cout << std::endl;
@@ -109,29 +109,29 @@ namespace SinglyDirectedList {
         }
 
         void erase(size_t idx) { //ERASE
-            Node<T> *_cur = move_idx(idx);
+            Node<T> *_node = move_idx(idx);
 
             m_size--;
 
-            if (_cur->next) {
+            if (_node->next) {
                 if (idx == 0)
-                    head = _cur->next;
+                    head = _node->next;
                 else {
                     Node<T> *_prev = move_idx(idx - 1);
-                    _prev->next = _cur->next;
+                    _prev->next = _node->next;
                 }
             } else {
                 Node<T> *_prev = move_idx(idx - 1);
                 _prev->next = nullptr;
             }
-            delete _cur;
+            delete _node;
         }
 
         void insert(size_t idx, T value) { //INSERT
-            Node<T> *_curr = move_idx(idx);
+            Node<T> *_node = move_idx(idx);
 
             Node<T> *new_node = new Node<T>{};
-                new_node->next = _curr;
+                new_node->next = _node;
                 new_node->value = value;
             if (idx == 0) {
                 head = new_node;

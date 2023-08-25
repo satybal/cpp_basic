@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 project(06.containers)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CXX_STANDARD_REQUIRED TRUE)
+
+add_compile_options(-Wall -Wextra -pedantic)
+
 add_executable(containers
     containers.cpp
 
@@ -13,9 +18,4 @@ add_executable(containers
 
     doublyListContainer.hpp
     #doublyListContainer.cpp
-)
-
-set_target_properties(containers PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
 )

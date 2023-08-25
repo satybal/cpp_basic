@@ -60,7 +60,7 @@ namespace SinglyDirectedList {
             }
 
         private:
-            Node<T> *iter_node;;
+            Node<T> *iter_node;
         };
 
         iterator begin() {

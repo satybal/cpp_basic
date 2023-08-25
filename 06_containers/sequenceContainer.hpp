@@ -140,9 +140,9 @@ namespace Sequence {
         size_t size() const { return m_size; }
 
     private:
+        T *data;
         size_t m_size;
         size_t total_space; // total mem x2 to real used
-        T *data ;
         iterator iter;
     };
 

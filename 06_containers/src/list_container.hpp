@@ -1,4 +1,4 @@
-namespace DoublyDirectedList {
+namespace List {
 
     template <typename T>
     struct Node {
@@ -169,4 +169,4 @@ namespace DoublyDirectedList {
         size_t m_size = 0;
         iterator iter;
     };
-} // end of DoublyDirectedList
+} // end of List

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(06.containers)
 
@@ -7,15 +7,6 @@ set(CXX_STANDARD_REQUIRED TRUE)
 
 add_compile_options(-Wall -Wextra -pedantic)
 
-add_executable(containers
-    containers.cpp
+add_subdirectory(src)
 
-    sequenceContainer.hpp
-    #sequenceContainer.cpp
-
-    singleListContainer.hpp
-    #singleListContainer.cpp
-
-    doublyListContainer.hpp
-    #doublyListContainer.cpp
-)
+add_subdirectory(gtests)

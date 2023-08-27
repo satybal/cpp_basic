@@ -1,7 +1,6 @@
-#include <iostream>
-#include "singleListContainer.hpp"
-#include "sequenceContainer.hpp"
-#include "doublyListContainer.hpp"
+//include <iostream>
+#include "vector_container.hpp"
+#include "list_container.hpp"
 
 template <class C>
 void test_container(C &con) {    
@@ -48,17 +47,13 @@ void test_container(C &con) {
 
 int main() {
 
-  std::cout << "DOUBLY DIRECTED LIST CONTAINER TEST" << std::endl;
-  DoublyDirectedList::Container<int> con1;
+  std::cout << "LIST CONTAINER TEST" << std::endl;
+  List::Container<int> con1;
   test_container(con1);
 
-  std::cout << "SINGLY DIRECTED LIST CONTAINER TEST" << std::endl;
-  SinglyDirectedList::Container<int> con2;
+  std::cout << "VECTOR CONTAINER TEST" << std::endl;
+  Vector::Container<int> con2;
   test_container(con2);
-
-  std::cout << "SEQUENCE CONTAINER TEST" << std::endl;
-  Sequence::Container<int> con3;
-  test_container(con3);
   
   return 0;
 }

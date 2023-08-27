@@ -45,7 +45,7 @@ namespace Vector {
 
         T *data;
         size_t m_size;
-        size_t total_space; // total mem x2 to real used
+        size_t total_space; // total mem x1.5 to real used
         iterator iter;
     };
 

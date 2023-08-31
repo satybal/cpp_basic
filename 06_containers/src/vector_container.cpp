@@ -48,16 +48,15 @@ namespace Vector {
     Container<T>::Container(const Container<T> &other):
         data{nullptr},
         m_size{other.m_size},
-        total_space{other.total_space} 
-            {
-                T *new_data = new T[other.total_space];
-                for (size_t i = 0; i < other.m_size; i++) {
-                    new_data[i] = other.data[i];
-                }
-
-
-                data = new_data;
+        total_space{other.total_space} {
+            T *new_data = new T[other.total_space];
+            for (size_t i = 0; i < other.m_size; i++) {
+                new_data[i] = other.data[i];
             }
+
+
+            data = new_data;
+        }
 
     template <typename T> 
     Container<T> &Container<T>::operator=(const Container<T> &rhs) {

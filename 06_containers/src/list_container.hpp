@@ -32,8 +32,13 @@ namespace List {
         Container() {}
         ~Container();
 
+        Container(std::initializer_list<T> init);
+
+        Container(const Container &other); // copy ctor
+        Container &operator=(const Container &other); // copy assignment
+
         Container(Container &&other); // move ctcr
-        Container &operator=(const Container &&rhs); // move assignment
+        Container &operator=(Container &&rhs); // move assignment
 
         iterator begin();
         iterator end(); 
@@ -44,14 +49,17 @@ namespace List {
         void insert(size_t idx, T value);
 
         T &operator[](size_t idx);
-        size_t size();
+        T &operator[](size_t idx) const;
+
+        size_t size() const;
 
     private:
-        Node<T> *get_node(size_t idx);
+        void clear();
+        Node<T> *get_node(size_t idx) const;
         void check_index(bool expr) const;
 
-        Node<T> *tail;
-        Node<T> *head;
+        Node<T> *last;
+        Node<T> *first;
         size_t m_size = 0;
         iterator iter;
     };

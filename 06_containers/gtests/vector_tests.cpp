@@ -106,7 +106,9 @@ TEST_F(vector, copies_well) {
 }
 
 TEST(vector_dtor, destructs_well) {
-    static size_t dtor_counter = 0;
+    static size_t dtor_counter;
+    dtor_counter = 0;
+    
     int *p1 = nullptr;
 
     class vec : public Vector::Container<int> {

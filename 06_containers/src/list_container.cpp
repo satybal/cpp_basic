@@ -5,9 +5,30 @@ namespace List {
 
     template <typename T>
     Container<T>::~Container() {
-        while (m_size > 0) {
-            this->erase(0);
-        }
+        this->clear();
+    }
+
+    template <typename T>
+    Container<T>::Container(std::initializer_list<T> init): Container<T>::Container{} {
+        this->clear();
+        for (auto i : init)
+            this->push_back(i);
+    }
+
+    template <typename T>
+    Container<T>::Container(const Container<T> &other): Container<T> {} {
+        for (size_t i = 0; i < other.size(); ++i)
+            this->push_back(other[i]);
+    }
+
+    template <typename T>
+    Container<T> &Container<T>::operator=(const Container<T> &other) {
+        this->clear();
+
+        for (size_t i = 0; i < other.size(); ++i)
+            this->push_back(other[i]);
+       
+       return *this;
     }
 
     template <typename T>
@@ -15,20 +36,16 @@ namespace List {
         m_size = other.m_size;
         other.m_size = 0;
 
-        head = other.head;
-        other.head = nullptr;
+        first = other.first;
+        last = other.last;
 
-        tail = other.tail;
-        other.tail = nullptr;
+        other.first = other.last = nullptr;
     }
 
     template <typename T>
-    Container<T> &Container<T>::operator=(const Container<T> &&rhs) {
-        this->head = std::move(rhs.head);
-        this->tail = std::move(rhs.tail);
-        this->m_size = std::move(rhs.m_size);
-
-        return *this;
+    Container<T> &Container<T>::operator=(Container<T> &&rhs) {
+        Container<T> tmp = std::move(rhs);
+        return *this = tmp;
     }
 
     template <typename T>
@@ -55,21 +72,28 @@ namespace List {
 
     template <typename T>
     typename Container<T>::iterator Container<T>::begin() {
-        iter.iter_node = head;          
+        iter.iter_node = first;          
         return iter;
     }
 
     template <typename T>
     typename Container<T>::iterator Container<T>::end() {
-        iter.iter_node = tail->next;
+        iter.iter_node = last->next;
         return iter;
     }
 
     template <typename T>
-    Node<T> *Container<T>::get_node(size_t idx) {
+    void Container<T>::clear() {
+        while (m_size > 0) {
+            this->erase(0);
+        }
+    }
+
+    template <typename T>
+    Node<T> *Container<T>::get_node(size_t idx) const {
         check_index(idx >= m_size);
 
-        Node<T> *_node = head;
+        Node<T> *_node = first;
 
         for (size_t i = 0; i < idx; ++i) {
             _node = _node->next;
@@ -85,8 +109,14 @@ namespace List {
     }
 
     template <typename T>
+    T &Container<T>::operator[](size_t idx) const {
+        Node<T> *_node = get_node(idx);
+        return _node->value;
+    }
+
+    template <typename T>
     void Container<T>::print() const { // PRINT
-        Node<T> *_node = head;
+        Node<T> *_node = first;
 
         while (_node != nullptr) {
             std::cout << _node->value << " ";
@@ -105,13 +135,13 @@ namespace List {
 
         if (m_size == 0) {
             new_node->prev = nullptr;
-            head = tail = new_node;
+            first = last = new_node;
         } else {
-            new_node->prev = tail;
+            new_node->prev = last;
         }
             
-        tail->next = new_node;
-        tail = new_node;
+        last->next = new_node;
+        last = new_node;
 
         m_size++;
     }
@@ -130,7 +160,7 @@ namespace List {
                 _node->next->prev = _node->prev;
             } else {
                 _node->next->prev = nullptr;
-                head = _node->next;
+                first = _node->next;
             }
         } else {
             _node->prev = nullptr;
@@ -155,7 +185,7 @@ namespace List {
 
         if (idx == 0) {
             new_node->prev = nullptr;
-            head = new_node;
+            first = new_node;
         } else {
             _node->prev->next = new_node;
             new_node->prev = _node->prev;
@@ -171,6 +201,6 @@ namespace List {
     }
 
     template <typename T>
-    size_t Container<T>::size() { return m_size; }
+    size_t Container<T>::size() const { return m_size; }
 
 } // end of namespace List

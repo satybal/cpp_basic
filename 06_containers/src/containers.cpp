@@ -53,6 +53,6 @@ int main() {
   std::cout << "VECTOR CONTAINER TEST" << std::endl;
   Vector::Container<int> con2;
   test_container(con2);
-  
+
   return 0;
 }

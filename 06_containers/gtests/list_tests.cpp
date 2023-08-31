@@ -82,20 +82,20 @@ TEST_F(list, shows_correct_size) {
 }
 
 TEST_F(list, copies_well) {
-    List::Container<int> temp_list = list_0_1_2_3_4;
+    List::Container<int> temp_list = list_0_1_2_3_4; // copy ctor
     bool eq = true;
     for (size_t i = 0; i < list_0_1_2_3_4.size(); ++i)
-        if (list_0_1_2_3_4[i] != list_0_1_2_3_4[i])
+        if (temp_list[i] != list_0_1_2_3_4[i])
             eq = false;
     
     ASSERT_TRUE(eq);
-    ASSERT_EQ(list_0_1_2_3_4.size(), list_0_1_2_3_4.size());
+    ASSERT_EQ(temp_list.size(), list_0_1_2_3_4.size());
 
     list_0_1_2_3_4.push_back(3);
-    temp_list = list_0_1_2_3_4;
+    temp_list = list_0_1_2_3_4; // copy assignment
     eq = true;
     for (size_t i = 0; i < list_0_1_2_3_4.size(); ++i)
-        if (list_0_1_2_3_4[i] != temp_list[i])
+        if (temp_list[i] != temp_list[i])
             eq = false;
     
     ASSERT_TRUE(eq);
@@ -137,13 +137,13 @@ TEST(list_dtor, destructs_well) {
 TEST(list_move, moves_well) {
     List::Container<int> list0 {1,2,3};
     List::Container<int> list1;
-    list1 = std::move(list0);
+    list1 = std::move(list0); // move assignment
 
     ASSERT_EQ(list0.size(), 0);
     ASSERT_EQ(list1.size(), 3);
 
     list1.push_back(30);
-    List::Container<int> list4 = std::move(list1);
+    List::Container<int> list4 = std::move(list1); // move ctor
 
     ASSERT_EQ(list4.size(), 4);
     ASSERT_EQ(list1.size(), 0);

@@ -38,6 +38,44 @@ namespace Vector {
     Container<T>::~Container() { delete[] data; }
     
     template <typename T>
+    Container<T>::Container(std::initializer_list<T> init): Container<T>::Container{} {
+        delete[] data;
+        for (auto i : init)
+            this->push_back(i);
+    }
+
+    template <typename T> 
+    Container<T>::Container(const Container<T> &other):
+        data{nullptr},
+        m_size{other.m_size},
+        total_space{other.total_space} 
+            {
+                T *new_data = new T[other.total_space];
+                for (size_t i = 0; i < other.m_size; i++) {
+                    new_data[i] = other.data[i];
+                }
+
+
+                data = new_data;
+            }
+
+    template <typename T> 
+    Container<T> &Container<T>::operator=(const Container<T> &rhs) {
+        delete[] this->data;
+
+        m_size = rhs.m_size;
+        total_space = rhs.total_space;
+
+        T *new_data = new T[total_space];
+        for (size_t i = 0; i < m_size; ++i)
+            new_data[i] = rhs[i];
+
+        data = new_data;
+
+        return *this;
+    }
+    
+    template <typename T>
     Container<T>::Container(Container<T> &&other) {
         data = other.data;
         other.data = nullptr;
@@ -50,12 +88,9 @@ namespace Vector {
     }
 
     template <typename T>
-    Container<T> &Container<T>::operator=(const Container<T> &&rhs) {
-        this->data = rhs.data;
-        this->m_size = std::move(rhs.m_size);
-        this->total_space = std::move(rhs.total_space);
-
-        return *this;
+    Container<T> &Container<T>::operator=(Container<T> &&rhs) {
+        Container<T> tmp = std::move(rhs);
+        return *this = tmp;
     }
 
     template <typename T>
@@ -148,6 +183,9 @@ namespace Vector {
 
     template <typename T>
     size_t Container<T>::size() const { return m_size; }
+
+    template <typename T>
+    T *Container<T>::get_data() const { return data; }
 
     template <typename T>
     void Container<T>::check_index(bool expr) const {

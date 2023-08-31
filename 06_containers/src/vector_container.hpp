@@ -24,8 +24,13 @@ namespace Vector {
         Container();
         ~Container();
 
+        explicit Container(std::initializer_list<T> init);
+
+        Container(const Container &other); // copy constructor
+        Container &operator=(const Container &rhs); // copy assignment
+
         Container(Container &&other); // move constustor
-        Container &operator=(const Container &&rhs); // move assignment operator
+        Container &operator=(Container &&rhs); // move assignment operator
     
         iterator begin();
         iterator end();
@@ -37,7 +42,9 @@ namespace Vector {
         void push_back(const T &value);
         void erase(size_t idx);
         void insert(size_t idx, const T &value);
+
         size_t size() const;
+        T *get_data() const;
 
     private:
         void check_index(bool expr) const;

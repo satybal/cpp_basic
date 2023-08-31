@@ -1,0 +1,3 @@
+/home/timur/CPP_basic/cpp_basic/06_containers/src/build/CMakeFiles/containers.dir
+/home/timur/CPP_basic/cpp_basic/06_containers/src/build/CMakeFiles/edit_cache.dir
+/home/timur/CPP_basic/cpp_basic/06_containers/src/build/CMakeFiles/rebuild_cache.dir

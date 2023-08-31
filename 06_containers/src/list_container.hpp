@@ -44,17 +44,17 @@ namespace List {
         iterator end(); 
 
         void print() const;
-        void push_back(T value);
-        void erase(size_t idx);
+        virtual void push_back(T value);
+        virtual void erase(size_t idx);
         void insert(size_t idx, T value);
 
         T &operator[](size_t idx);
         T &operator[](size_t idx) const;
 
         size_t size() const;
+        void clear();
 
     private:
-        void clear();
         Node<T> *get_node(size_t idx) const;
         void check_index(bool expr) const;
 

@@ -109,27 +109,25 @@ TEST(list_dtor, destructs_well) {
     class list : public List::Container<int> {
     public:
         ~list() {
-            this->clear();
+             this->clear();
         }
 
-        void clear() {
-            while (this->size() > 0) {
-                this->erase(0);
-                nodes_counter--;
-            }            
-        }
-
-        void push_back_test(int value) {
-            this->push_back(value);
+        void push_back(int value) override {
+            List::Container<int>::push_back(value);
             nodes_counter++;
+        }
+
+        void erase(size_t idx) override {
+            List::Container<int>::erase(idx);
+            nodes_counter--;
         }
     };
 
     {
         list l1;
-        l1.push_back_test(3);
-        l1.push_back_test(5);
-        l1.push_back_test(7);
+        l1.push_back(3);
+        l1.push_back(5);
+        l1.push_back(7);
         ASSERT_EQ(nodes_counter, 3);
     }
 

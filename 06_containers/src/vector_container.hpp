@@ -29,14 +29,14 @@ namespace Vector {
         Container(const Container &other); // copy constructor
         Container &operator=(const Container &rhs); // copy assignment
 
-        Container(Container &&other); // move constustor
+        Container(Container &&other) noexcept; // move constustor
         Container &operator=(Container &&rhs); // move assignment operator
     
         iterator begin();
         iterator end();
 
         T &operator[](size_t idx);
-        const T &operator[](size_t idx) const;
+        T &operator[](size_t idx) const;
 
         void print(); 
         void push_back(const T &value);

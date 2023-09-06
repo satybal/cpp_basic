@@ -32,7 +32,7 @@ namespace List {
     }
 
     template <typename T>
-    Container<T>::Container(Container<T> &&other) {
+    Container<T>::Container(Container<T> &&other) noexcept {
         m_size = other.m_size;
         other.m_size = 0;
 

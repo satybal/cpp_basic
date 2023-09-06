@@ -75,7 +75,7 @@ namespace Vector {
     }
     
     template <typename T>
-    Container<T>::Container(Container<T> &&other) {
+    Container<T>::Container(Container<T> &&other) noexcept {
         data = other.data;
         other.data = nullptr;
 
@@ -101,7 +101,7 @@ namespace Vector {
     }
 
     template <typename T>
-    const T &Container<T>::operator[](size_t idx) const {
+    T &Container<T>::operator[](size_t idx) const {
         check_index(idx >= m_size); 
         
         auto pos = data + idx;

@@ -37,7 +37,7 @@ namespace List {
         Container(const Container &other); // copy ctor
         Container &operator=(const Container &other); // copy assignment
 
-        Container(Container &&other); // move ctcr
+        Container(Container &&other) noexcept; // move ctcr
         Container &operator=(Container &&rhs); // move assignment
 
         iterator begin();

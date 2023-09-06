@@ -58,4 +58,4 @@ namespace Vector {
 
 } // end of namespace Vector
 
-#include "vector_container.cpp"
+#include "vector_container.ipp"

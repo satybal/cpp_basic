@@ -38,7 +38,7 @@ void test_container(C &con) {
 
     std::cout << "Printing with iterator" << std::endl;
     for (auto i = con.begin(); i != con.end(); ++i) 
-    std::cout << *i << " ";
+      std::cout << *i << " ";
     std::cout << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;

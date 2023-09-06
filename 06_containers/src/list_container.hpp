@@ -65,4 +65,4 @@ namespace List {
     };
 } // end of namespace List
 
-#include "list_container.cpp"
+#include "list_container.ipp"

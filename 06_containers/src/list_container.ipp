@@ -49,6 +49,9 @@ namespace List {
     }
 
     template <typename T>
+    Container<T>::iterator::iterator(Node<T> *_node) : iter_node{_node} {}
+
+    template <typename T>
     typename Container<T>::iterator &Container<T>::iterator::operator++() {
         iter_node = iter_node->next;
         return *this;
@@ -72,14 +75,12 @@ namespace List {
 
     template <typename T>
     typename Container<T>::iterator Container<T>::begin() {
-        iter.iter_node = first;          
-        return iter;
+        return first;
     }
 
     template <typename T>
     typename Container<T>::iterator Container<T>::end() {
-        iter.iter_node = last->next;
-        return iter;
+        return last;
     }
 
     template <typename T>

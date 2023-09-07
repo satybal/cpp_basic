@@ -13,6 +13,7 @@ namespace Vector {
         public:      
             friend class Container;  
 
+            iterator(T *value);
             bool operator!=(const iterator &rhs);
             iterator &operator++();
             T &operator*(); 
@@ -53,7 +54,6 @@ namespace Vector {
         T *data;
         size_t m_size;
         size_t total_space; // total mem x1.5 to real used
-        iterator iter;
     };
 
 } // end of namespace Vector

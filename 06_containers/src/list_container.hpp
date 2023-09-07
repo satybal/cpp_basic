@@ -20,6 +20,7 @@ namespace List {
         public:
             friend class Container;
 
+            iterator(Node<T> *_node);
             iterator &operator++();
             iterator &operator--();
             bool operator!=(const iterator &rhs);
@@ -61,7 +62,6 @@ namespace List {
         Node<T> *last;
         Node<T> *first;
         size_t m_size = 0;
-        iterator iter;
     };
 } // end of namespace List
 

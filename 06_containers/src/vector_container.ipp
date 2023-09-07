@@ -4,6 +4,9 @@
 namespace Vector {
 
     template <typename T>
+    Container<T>::iterator::iterator(T *value) : ptr{value} {}
+
+    template <typename T>
     bool Container<T>::iterator::operator!=(const Container<T>::iterator &rhs) {
         return this->ptr != rhs.ptr;
     }
@@ -21,14 +24,12 @@ namespace Vector {
 
     template <typename T>
     typename Container<T>::iterator Container<T>::begin() {
-        iter.ptr = data;
-        return iter;
+        return data;
     }
 
     template <typename T>
     typename Container<T>::iterator Container<T>::end() {
-        iter.ptr = data + m_size;
-        return iter;
+        return data + m_size;
     }
 
     template <typename T>

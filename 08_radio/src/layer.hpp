@@ -15,10 +15,10 @@ public:
     return false;
   }
 
-  void SubscribeToEvents(Button* Receiver) {
+  void SubscribeToEvents(playRadioButton* Receiver) {
     Subscribers.push_back(Receiver);
   }
 
 private:
-  std::vector<Button*> Subscribers;
+  std::vector<playRadioButton*> Subscribers;
 };

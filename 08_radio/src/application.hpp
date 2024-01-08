@@ -1,10 +1,11 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "window.hpp"
-// #include "HTTPRequest.hpp"
-// #include "json.hpp"
+#include "HTTPRequest.hpp"
+#include "json.hpp"
+#include "buttons.hpp"
 // #include "layer.hpp"
-// #include <iostream>
+#include <iostream>
 
 class Application {
 public:
@@ -20,9 +21,9 @@ public:
     SDL_PushEvent(&QuitEvent);
   }
 
-  // void ShowStream(const char* streamURL) {
-  //   std::cout << streamURL << std::endl;
-  // }
+  void ShowStream(const char* arg) {
+    std::cout << arg << std::endl;
+  }
 
   // void fillStationsGrid(Layer &ui) {
   //   auto urls = getDefaultUrls();
@@ -40,26 +41,22 @@ public:
   //   }
   // }
 
-  // nlohmann::json getDefaultUrls() {
-  //   //http://all.api.radio-browser.info/json/stations/bycountry/russia
+  nlohmann::json getDefaultUrls() {
 
-  //   http::Request request{"http://all.api.radio-browser.info/json/stations/bycountry/russia"};
-	//   const auto response = request.send("GET");
+    http::Request request{"http://all.api.radio-browser.info/json/stations/bycountry/russia"};
+	  const auto response = request.send("GET");
 
-  //   // std::cout << response.status.reason << std::endl;
-  //   //auto str = std::string{response.body.begin(), response.body.end()};
+    nlohmann::json m_json = nlohmann::json::parse(std::string{response.body.begin(), response.body.end()});
 
-  //   nlohmann::json m_json = nlohmann::json::parse(std::string{response.body.begin(), response.body.end()});
+    nlohmann::json SearchResults;
+    for (size_t i = 0; i < MaxURLsCount; ++i) {
+      SearchResults.push_back(m_json[i]);
+    }
 
-  //   nlohmann::json SearchResults(MaxURLsCount);
-  //   for (size_t i = 0; i < MaxURLsCount; ++i) {
-  //     SearchResults.push_back(m_json[i]);
-  //   }
-
-  //   return SearchResults;
-  // }
+    return SearchResults;
+  }
 
 private:
   Window* mWindow;
-  // size_t MaxURLsCount = 30;
+  size_t MaxURLsCount = 30;
 };

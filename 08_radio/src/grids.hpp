@@ -8,36 +8,45 @@
 
 class StationsGrid {
 public:
-    //StationsGrid( Application *App, Layer *UI) : ui{UI}, app{App} {}
+    StationsGrid( Application *App, Layer *UI ) : ui{UI}, app{App} {}
 
-    void fill(nlohmann::json &urls, Application &app, Layer &ui) {
+
+    void fill(nlohmann::json &stationsInfo) {
         auto x = start_x;
         auto y = start_y;
 
-        // for (auto url: urls) {
-        //     playRadioButton button { &app, x, y };
-        //     buttons.push_back(button);
-        //     ui.SubscribeToEvents(&button);
+        //std::cout << stationsList[0] << std::endl;
+        playRadioButton button { app, "some string", x, y };
+        ui->SubscribeToEvents(&button);
 
-        //     x += (distance_x + size);
-        //     if (x >= 800 - size) {
-        //         y += (distance_y + size);
+        playRadioButton button1 { app, "some other string", x + 200, y };
+        ui->SubscribeToEvents(&button1);
 
-        //         if (y >= 600 - size) {
-        //             break;
-        //         } else {
-        //             x = start_x;
-        //         }
-        //     }
+        // for (auto station: stationsList) {
+            // {
+            //     playRadioButton button { &app, x, y };
+            //     buttons.push_back(button);
+            //     ui.SubscribeToEvents(&button);
+            // }
+
+            // x += (distance_x + size);
+            // if (x >= 800 - size) {
+            //     y += (distance_y + size);
+
+            //     if (y >= 600 - size) {
+            //         break;
+            //     } else {
+            //         x = start_x;
+            //     }
+            // }
 
         // }
-
     }
 
 private:
-    std::vector<playRadioButton> buttons;
-    // Application *app;
-    // Layer *ui;
+ 
+    Application *app;
+    Layer *ui;
     
     int start_x = 250;
     int start_y = 50;

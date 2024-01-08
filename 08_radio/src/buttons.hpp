@@ -11,9 +11,11 @@ public:
 
 class playRadioButton : public Button {
 public:
-  playRadioButton(Application* App, int x, int y) :
+  playRadioButton(Application* App, const char* arg, int x, int y) :
     SDLWindowSurface{App->GetWindowSurface()},
     App{App}, 
+    arg{arg},
+    //stationInfo{stationInfo},
     m_x{x}, m_y{y}
   {
     Update();
@@ -25,18 +27,16 @@ public:
       Event->button.button == SDL_BUTTON_LEFT &&
       isHovered
     ) {
-// here is button event
-      App->Quit();
-      // App->ShowStream("http://");
+
+      // App->Quit();
+     // std::cout << stationInfo << std::endl;
+
+      App->ShowStream(getArg());
       return true;
 
-    } else if (
-      Event->type == SDL_MOUSEMOTION
-    ) [[likely]] {
+    } else if (Event->type == SDL_MOUSEMOTION) {
 
-      if (isHovered != IsWithinBounds(
-        Event->motion.x, Event->motion.y
-      )) {
+      if (isHovered != IsWithinBounds(Event->motion.x, Event->motion.y )) {
 
         isHovered = !isHovered;
         Update();
@@ -49,8 +49,14 @@ public:
     return false;  
   }
 
-// private:
+  const char* getArg() {
+    return arg;
+  }
+
+private:
   Application* App;
+  const char* arg;
+ // nlohmann::json stationInfo;
 
   bool IsWithinBounds(int x, int y) {
     if (x < Rect.x) return false;

@@ -20,10 +20,6 @@ public:
     SDL_PushEvent(&QuitEvent);
   }
 
-  // void ShowStream(const char* arg) {
-  //   std::cout << arg << std::endl;
-  // }
-
 private:
   Window* mWindow;
   size_t MaxURLsCount = 30;

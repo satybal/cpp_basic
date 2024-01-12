@@ -10,7 +10,7 @@ public:
       "onRadio",
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
-      800, 400, 0
+      770, 570, 0
     );
 
     SDLWindowSurface = SDL_GetWindowSurface(SDLWindow);
@@ -45,6 +45,6 @@ public:
 private:
   SDL_Window* SDLWindow;
   SDL_Surface* SDLWindowSurface;
-  SDL_Rect GenresRect { 0, 0, 200, 600 };
-  SDL_Rect StationsRect {200, 0, 600, 600 };
+  SDL_Rect GenresRect { 0, 0, 200, 570 };
+  SDL_Rect StationsRect {200, 0, 570, 570 };
 };

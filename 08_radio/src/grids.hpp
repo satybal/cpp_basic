@@ -19,34 +19,24 @@ public:
         auto x = start_x;
         auto y = start_y;
 
-        playRadioButton button { app, &(channels[0]), x, y };
-        ui->SubscribeToEvents(&button);
+        for (const auto &channel: channels) {
+            buttons.push_back({ app, &channel, x, y });
 
-        playRadioButton button1 { app, &(channels[1]), x+200, y };
-        ui->SubscribeToEvents(&button1);
+            x += (distance_x + size);
+            if (x >= (770 - size)) {
+                y += (distance_y + size);
 
-        // playRadioButton button1 { app, "some other string", x + 200, y };
-        // ui->SubscribeToEvents(&button1);
+                if (y >= 570 - size) {
+                    break;
+                } else {
+                    x = start_x;
+                }
+            }
+        }
 
-        // for (auto station: stationsList) {
-            // {
-            //     playRadioButton button { &app, x, y };
-            //     buttons.push_back(button);
-            //     ui.SubscribeToEvents(&button);
-            // }
-
-            // x += (distance_x + size);
-            // if (x >= 800 - size) {
-            //     y += (distance_y + size);
-
-            //     if (y >= 600 - size) {
-            //         break;
-            //     } else {
-            //         x = start_x;
-            //     }
-            // }
-
-        // }
+        for (auto &button: buttons) {
+            ui->SubscribeToEvents(&button);
+        }
     }
 
 private:
@@ -54,14 +44,15 @@ private:
     Application *app;
     Layer *ui;
     std::vector<RadioStationInfo> channels;
+    std::vector<playRadioButton> buttons;
     
-    int start_x = 250;
-    int start_y = 50;
+    int start_x = 220;
+    int start_y = 20;
 
-    int distance_x = 100;
-    int distance_y = 50;
+    int distance_x = 20;
+    int distance_y = 20;
 
-    int size = 100;
+    int size = 90;
 
     size_t MaxURLsCount = 30;
     const char* defaultURL = "http://all.api.radio-browser.info/json/stations/bycountry/russia";

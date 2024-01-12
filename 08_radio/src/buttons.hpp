@@ -13,7 +13,8 @@ public:
 
 class playRadioButton : public Button {
 public:
-  playRadioButton(Application* App, RadioStationInfo* Channel, int x, int y) :
+  playRadioButton() {}
+  playRadioButton(Application* App,const RadioStationInfo* Channel, int x, int y) :
     app{App}, 
     SDLWindowSurface{app->GetWindowSurface()},
     channel{Channel},
@@ -22,20 +23,18 @@ public:
     Update();
   }
 
+  ~playRadioButton() {}
+
   bool HandleEvent(const SDL_Event* Event) override {
     if (
       Event->type == SDL_MOUSEBUTTONDOWN &&
       Event->button.button == SDL_BUTTON_LEFT &&
       isHovered
     ) {
-
       //app->Quit();
-      // std::cout << "done" << std::endl;
-      getChannelData();
-      // std::cout << channelUrl() << std::endl;
-      // std::cout << channelName() << std::endl;
 
-      //App->ShowStream(getArg());
+      getChannelData();
+
       return true;
 
     } else if (Event->type == SDL_MOUSEMOTION) {
@@ -53,19 +52,11 @@ public:
     return false;  
   }
 
-  // std::string channelName() {
-  //   return getValue()["name"];
-  // }
-
-  // std::string channelUrl() {
-  //   return getValue()["url"];
-  // }
-
   const RadioStationInfo getChannelData() {
     const auto value = *channel;
 
-    for (const auto&[key, value]: value) {
-      std::cout << key << ": " << value << std::endl;
+    for (const auto&[key, val]: value) {
+      std::cout << key << ": " << val << std::endl;
     }
 
     return value;
@@ -74,11 +65,11 @@ public:
 private:
   Application* app;
   SDL_Surface* SDLWindowSurface;
-  RadioStationInfo *channel;
+  const RadioStationInfo *channel;
 
   int m_x, m_y;
-  const int size_x = 100;
-  const int size_y = 100;
+  const int size_x = 90;
+  const int size_y = 90;
 
   SDL_Color BGColor { 21, 42, 61, 255 };
   SDL_Color HoverColor { 219, 90, 20, 255 };

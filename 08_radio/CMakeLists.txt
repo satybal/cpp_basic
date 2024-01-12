@@ -28,3 +28,14 @@ endif()
 # Link to the actual SDL2 library. SDL2::SDL2 is the shared SDL library, SDL2::SDL2-static is the static SDL libarary.
 target_link_libraries(onRadio PRIVATE SDL2::SDL2)
 
+target_compile_options(onRadio PRIVATE 
+    -g
+    -Wall
+    -Wextra
+    -Werror
+    -Wno-unused-parameter
+    -pedantic
+    # -fsanitize=address
+)
+
+

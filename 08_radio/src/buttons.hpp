@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include "application.hpp"
 
+using RadioStationInfo = std::map<const char*, std::string>;
+
 class Button {
 public:
   virtual bool HandleEvent(const SDL_Event* Event) {
@@ -11,11 +13,10 @@ public:
 
 class playRadioButton : public Button {
 public:
-  playRadioButton(Application* App, const char* arg, int x, int y) :
-    SDLWindowSurface{App->GetWindowSurface()},
-    App{App}, 
-    arg{arg},
-    //stationInfo{stationInfo},
+  playRadioButton(Application* App, RadioStationInfo* Channel, int x, int y) :
+    app{App}, 
+    SDLWindowSurface{app->GetWindowSurface()},
+    channel{Channel},
     m_x{x}, m_y{y}
   {
     Update();
@@ -28,10 +29,13 @@ public:
       isHovered
     ) {
 
-      // App->Quit();
-     // std::cout << stationInfo << std::endl;
+      //app->Quit();
+      // std::cout << "done" << std::endl;
+      getChannelData();
+      // std::cout << channelUrl() << std::endl;
+      // std::cout << channelName() << std::endl;
 
-      App->ShowStream(getArg());
+      //App->ShowStream(getArg());
       return true;
 
     } else if (Event->type == SDL_MOUSEMOTION) {
@@ -49,14 +53,38 @@ public:
     return false;  
   }
 
-  const char* getArg() {
-    return arg;
+  // std::string channelName() {
+  //   return getValue()["name"];
+  // }
+
+  // std::string channelUrl() {
+  //   return getValue()["url"];
+  // }
+
+  const RadioStationInfo getChannelData() {
+    const auto value = *channel;
+
+    for (const auto&[key, value]: value) {
+      std::cout << key << ": " << value << std::endl;
+    }
+
+    return value;
   }
 
 private:
-  Application* App;
-  const char* arg;
- // nlohmann::json stationInfo;
+  Application* app;
+  SDL_Surface* SDLWindowSurface;
+  RadioStationInfo *channel;
+
+  int m_x, m_y;
+  const int size_x = 100;
+  const int size_y = 100;
+
+  SDL_Color BGColor { 21, 42, 61, 255 };
+  SDL_Color HoverColor { 219, 90, 20, 255 };
+  SDL_Rect Rect { m_x, m_y, size_x, size_y };
+  SDL_Rect InnerRect { m_x + 5, m_y + 5, size_x - 10, size_y - 10 };
+
 
   bool IsWithinBounds(int x, int y) {
     if (x < Rect.x) return false;
@@ -83,15 +111,5 @@ private:
   }
 
   bool isHovered { false };
-
-  int m_x, m_y;
-  const int size_x = 100;
-  const int size_y = 100;
-
-  SDL_Surface* SDLWindowSurface;
-  SDL_Color BGColor { 21, 42, 61, 255 };
-  SDL_Color HoverColor { 219, 90, 20, 255 };
-  SDL_Rect Rect { m_x, m_y, size_x, size_y };
-  SDL_Rect InnerRect { m_x + 5, m_y + 5, size_x - 10, size_y - 10 };
 
 };

@@ -6,21 +6,27 @@
 #include "application.hpp"
 #include "layer.hpp"
 
-class StationsGrid {
+using RadioStationInfo = std::map<const char*, std::string>;
+
+class ChannelsGrid {
 public:
-    StationsGrid( Application *App, Layer *UI ) : ui{UI}, app{App} {}
+    ChannelsGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
+        channels = getChannels(defaultURL);
+        fillGrid();
+    }
 
-
-    void fill(nlohmann::json &stationsInfo) {
+    void fillGrid() {
         auto x = start_x;
         auto y = start_y;
 
-        //std::cout << stationsList[0] << std::endl;
-        playRadioButton button { app, "some string", x, y };
+        playRadioButton button { app, &(channels[0]), x, y };
         ui->SubscribeToEvents(&button);
 
-        playRadioButton button1 { app, "some other string", x + 200, y };
+        playRadioButton button1 { app, &(channels[1]), x+200, y };
         ui->SubscribeToEvents(&button1);
+
+        // playRadioButton button1 { app, "some other string", x + 200, y };
+        // ui->SubscribeToEvents(&button1);
 
         // for (auto station: stationsList) {
             // {
@@ -47,6 +53,7 @@ private:
  
     Application *app;
     Layer *ui;
+    std::vector<RadioStationInfo> channels;
     
     int start_x = 250;
     int start_y = 50;
@@ -55,5 +62,29 @@ private:
     int distance_y = 50;
 
     int size = 100;
+
+    size_t MaxURLsCount = 30;
+    const char* defaultURL = "http://all.api.radio-browser.info/json/stations/bycountry/russia";
+
+    const std::vector<RadioStationInfo> getChannels(const char* url) {
+
+        http::Request request{url};
+        const auto response = request.send("GET");
+
+        nlohmann::json m_json = nlohmann::json::parse(std::string{response.body.begin(), response.body.end()});
+
+        std::vector<RadioStationInfo> results;
+        for (size_t i = 0; i < MaxURLsCount; ++i) {
+            results.push_back(
+                {
+                    { "name", m_json[i]["name"].template get<std::string>() },
+                    { "url", m_json[i]["url"].template get<std::string>() },
+                    { "image", m_json[i]["favicon"].template get<std::string>() }
+                } 
+            );
+        }
+
+        return results;
+    }
 };
 

@@ -10,7 +10,7 @@ public:
       "onRadio",
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
-      800, 600, 0
+      800, 400, 0
     );
 
     SDLWindowSurface = SDL_GetWindowSurface(SDLWindow);

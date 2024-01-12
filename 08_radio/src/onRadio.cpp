@@ -7,35 +7,17 @@
 #include "application.hpp"
 #include "grids.hpp"
 
-// void fillStationsGrid( Application *app, 
-//                        Layer *ui, 
-//                        nlohmann::json *stationsInfo,
-//                        std::vector<playRadioButton *> buttons) {
-  
-// }
-
 int main() {
-  //SDL_Init(SDL_INIT_EVERYTHING);
 
   Window GameWindow;
   Application App { &GameWindow };
   Layer UI;
-  StationsGrid Stations { &App, &UI };
-
-  nlohmann::json stationsInfo = App.getDefaultUrls();
-  Stations.fill(stationsInfo);
-
-  // Stations.fill(&App, &UI);
-
-  // playRadioButton first_button { &App, 50, 50 };
-  // UI.SubscribeToEvents(&first_button);
-
-  // Button second_button { &App, 200, 50 };
-  // UI.SubscribeToEvents(&second_button);
-
+  ChannelsGrid Stations { &App, &UI };
   SDL_Event Event;
+
   while(true) {
     while(SDL_PollEvent(&Event)) {
+
       if (Event.type == SDL_QUIT) {
         SDL_Quit();
         return 0;
@@ -62,8 +44,8 @@ int main() {
   "clicktrend":15,
   "codec":"MP3",
   "country":"The Russian Federation",
-  "countrycode":"RU","favicon":
-  "http://liveam.tv/img/2494.jpg",
+  "countrycode":"RU",
+  "favicon":"http://liveam.tv/img/2494.jpg",
   "geo_lat":null,
   "geo_long":null,
   "has_extended_info":false,

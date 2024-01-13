@@ -6,6 +6,8 @@
 #include "application.hpp"
 #include "layer.hpp"
 
+//############################# CHANNELS GRID ###############################
+
 using RadioStationInfo = std::map<const char*, std::string>;
 
 class ChannelsGrid {
@@ -77,5 +79,51 @@ private:
 
         return results;
     }
+};
+
+//############################# CHANNELS GRID ###############################
+
+using GenreInfo = std::pair<const char*, const char*>;
+
+class GenresGrid {
+public:
+    GenresGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
+        fillGrid();
+    }
+
+    void fillGrid() {
+        auto y = start_y;
+
+        for (const auto &genre: genreUrls) {
+            buttons.push_back({ app, &genre, y });
+
+            y += (distance_y + size);
+        }
+
+        for (auto &button: buttons) {
+            ui->SubscribeToEvents(&button);
+        }
+    }
+
+private:
+ 
+    Application *app;
+    Layer *ui;
+    std::vector<genreButton> buttons;
+    
+    int start_x = 50;
+    int start_y = 170;
+
+    int distance_y = 40;
+
+    int size = 50;
+
+    const std::vector<std::pair<const char*, const char*>> genreUrls {
+        { "Джаз",   "https://nl1.api.radio-browser.info/json/stations/bytag/jaz" },
+        { "Рок",    "https://nl1.api.radio-browser.info/json/stations/bytag/rock" },
+        { "Попса",  "https://nl1.api.radio-browser.info/json/stations/bytag/pop" },
+        { "Релакс", "https://nl1.api.radio-browser.info/json/stations/bytag/relax" }
+    };
+
 };
 

@@ -11,6 +11,7 @@ int main() {
   Application App { &GameWindow };
   Layer UI;
   ChannelsGrid Stations { &App, &UI };
+  GenresGrid Genres { &App, &UI };
   SDL_Event Event;
 
   while(true) {

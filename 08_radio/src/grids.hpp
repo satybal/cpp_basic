@@ -1,10 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include "buttons.hpp"
-#include <vector>
-#include "application.hpp"
-#include "layer.hpp"
+#include "HTTPRequest.hpp"
+#include "json.hpp"
 
 //############################# CHANNELS GRID ###############################
 

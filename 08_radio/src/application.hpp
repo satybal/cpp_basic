@@ -1,10 +1,4 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include "window.hpp"
-#include "HTTPRequest.hpp"
-#include "json.hpp"
-#include "buttons.hpp"
-#include <iostream>
 
 class Application {
 public:

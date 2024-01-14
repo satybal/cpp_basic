@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
+#include <vector>
+#include <map>
+
 #include "window.hpp"
-#include "buttons.hpp"
 #include "layer.hpp"
 #include "application.hpp"
 #include "grids.hpp"

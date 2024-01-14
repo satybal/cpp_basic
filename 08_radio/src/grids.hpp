@@ -13,11 +13,12 @@ using RadioStationInfo = std::map<const char*, std::string>;
 class ChannelsGrid {
 public:
     ChannelsGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
-        channels = getChannels(defaultURL);
-        fillGrid();
+        fillGrid(defaultURL);
     }
 
-    void fillGrid() {
+    void fillGrid(const char* url) {
+        channels = getChannels(url);
+        
         auto x = start_x;
         auto y = start_y;
 
@@ -28,7 +29,7 @@ public:
             if (x >= (770 - size)) {
                 y += (distance_y + size);
 
-                if (y >= 570 - size) {
+                if (y >= 580 - size) {
                     break;
                 } else {
                     x = start_x;
@@ -52,7 +53,7 @@ private:
     int start_y = 20;
 
     int distance_x = 20;
-    int distance_y = 20;
+    int distance_y = 50;
 
     int size = 90;
 

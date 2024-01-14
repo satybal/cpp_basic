@@ -20,6 +20,10 @@ public:
     SDL_PushEvent(&QuitEvent);
   }
 
+  // void updateChannels(const char* url) {
+
+  // }
+
 private:
   Window* mWindow;
   size_t MaxURLsCount = 30;

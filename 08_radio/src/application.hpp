@@ -20,5 +20,4 @@ public:
 
 private:
   Window* mWindow;
-  size_t MaxURLsCount = 30;
 };

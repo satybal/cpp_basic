@@ -4,16 +4,19 @@
 
 #include "window.hpp"
 #include "layer.hpp"
-#include "application.hpp"
 #include "grids.hpp"
 
 int main() {
 
   Window GameWindow;
-  Application App { &GameWindow };
   Layer UI;
-  ChannelsGrid Stations { &App, &UI };
-  GenresGrid Genres { &App, &UI };
+  ChannelsGrid Channels;
+  GenresGrid Genres;
+
+  Genres.fillGrid( &GameWindow, &UI );
+  Channels.fillGrid(Channels.getDefaultUrl(), &GameWindow, &UI);
+
+
   SDL_Event Event;
 
   while(true) {

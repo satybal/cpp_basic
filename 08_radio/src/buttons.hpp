@@ -3,7 +3,6 @@
 #include <iostream>
 #include "application.hpp"
 
-
 class Button {
 public:
   virtual bool HandleEvent(const SDL_Event* Event) {
@@ -17,9 +16,8 @@ using RadioStationInfo = std::map<const char*, std::string>;
 
 class playRadioButton : public Button {
 public:
-  playRadioButton(Application* App,const RadioStationInfo* Channel, int x, int y) :
-    app{App}, 
-    SDLWindowSurface{app->GetWindowSurface()},
+  playRadioButton(Window *Window,const RadioStationInfo* Channel, int x, int y) :
+    window{Window},
     channel{Channel},
     m_x{x}, m_y{y}
   {
@@ -64,8 +62,8 @@ public:
   }
 
 private:
-  Application* app;
-  SDL_Surface* SDLWindowSurface;
+  Window* window;
+  SDL_Surface* SDLWindowSurface = window->GetSurface();
   const RadioStationInfo *channel;
 
   int m_x, m_y;
@@ -105,9 +103,9 @@ using GenreInfo = std::pair<const char*, const char*>;
 
 class genreButton : public Button {
 public:
-  genreButton(Application* App, const GenreInfo* Genre, int y) :
-    app{App}, 
-    SDLWindowSurface{app->GetWindowSurface()},
+
+  genreButton(Window *Window, const GenreInfo* Genre, int y) :
+    window{Window},
     genre{Genre},
     m_y{y}
   {
@@ -150,8 +148,8 @@ public:
   }
 
 private:
-  Application* app;
-  SDL_Surface* SDLWindowSurface;
+  Window* window;
+  SDL_Surface* SDLWindowSurface = window->GetSurface();
   const GenreInfo *genre;
 
   int m_x = 50;

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "buttons.hpp"
+// #include "buttons.hpp"
 #include "HTTPRequest.hpp"
 #include "json.hpp"
+// #include "application.hpp"
 
 //############################# CHANNELS GRID ###############################
 
@@ -10,18 +11,18 @@ using RadioStationInfo = std::map<const char*, std::string>;
 
 class ChannelsGrid {
 public:
-    ChannelsGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
-        fillGrid(defaultURL);
-    }
 
-    void fillGrid(const char* url) {
+    void fillGrid(const char* url, /* = "http://all.api.radio-browser.info/json/stations/bycountry/russia", */
+                  Window* window, 
+                  Layer* ui) {
+
         channels = getChannels(url);
         
         auto x = start_x;
         auto y = start_y;
 
         for (const auto &channel: channels) {
-            buttons.push_back({ app, &channel, x, y });
+            buttons.push_back({ window, &channel, x, y });
 
             x += (distance_x + size);
             if (x >= (770 - size)) {
@@ -40,10 +41,12 @@ public:
         }
     }
 
+    const char* getDefaultUrl() {
+        return defaultUrl;
+    }
+
 private:
  
-    Application *app;
-    Layer *ui;
     std::vector<RadioStationInfo> channels;
     std::vector<playRadioButton> buttons;
     
@@ -56,7 +59,7 @@ private:
     int size = 90;
 
     size_t MaxURLsCount = 30;
-    const char* defaultURL = "http://all.api.radio-browser.info/json/stations/bycountry/russia";
+    const char* defaultUrl = "http://all.api.radio-browser.info/json/stations/bycountry/russia";
 
     const std::vector<RadioStationInfo> getChannels(const char* url) {
 
@@ -86,15 +89,12 @@ using GenreInfo = std::pair<const char*, const char*>;
 
 class GenresGrid {
 public:
-    GenresGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
-        fillGrid();
-    }
 
-    void fillGrid() {
+    void fillGrid(Window* window, Layer* ui) {
         auto y = start_y;
 
         for (const auto &genre: genreUrls) {
-            buttons.push_back({ app, &genre, y });
+            buttons.push_back({ window, &genre, y });
 
             y += (distance_y + size);
         }
@@ -106,8 +106,6 @@ public:
 
 private:
  
-    Application *app;
-    Layer *ui;
     std::vector<genreButton> buttons;
     
     int start_x = 50;

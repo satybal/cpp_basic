@@ -3,15 +3,14 @@
 #include <map>
 
 #include "window.hpp"
-#include "grids.hpp"
+#include "channels.hpp"
+#include "genres.hpp"
 
 int main() {
 
   Window AppWindow;
   ChannelsGrid Channels { &AppWindow };
   GenresGrid Genres { &AppWindow, &Channels };
-
-  Channels.fillGrid("http://all.api.radio-browser.info/json/stations/bycountry/russia");
 
   SDL_Event Event;
 

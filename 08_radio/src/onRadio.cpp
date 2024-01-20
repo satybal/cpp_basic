@@ -3,17 +3,16 @@
 #include <map>
 
 #include "window.hpp"
-#include "layer.hpp"
-#include "application.hpp"
 #include "grids.hpp"
 
 int main() {
 
-  Window GameWindow;
-  Application App { &GameWindow };
-  Layer UI;
-  ChannelsGrid Stations { &App, &UI };
-  GenresGrid Genres { &App, &UI };
+  Window AppWindow;
+  ChannelsGrid Channels { &AppWindow };
+  GenresGrid Genres { &AppWindow, &Channels };
+
+  Channels.fillGrid("http://all.api.radio-browser.info/json/stations/bycountry/russia");
+
   SDL_Event Event;
 
   while(true) {
@@ -24,13 +23,17 @@ int main() {
         return 0;
       }
 
-      if (UI.HandleEvent(&Event)) {
-        continue;
+      if ( Genres.HandleEvent(&Event)) {
+        continue;;
+      }
+
+      if ( Channels.HandleEvent(&Event)) {
+        continue;;
       }
 
     }
 
-    GameWindow.RenderFrame();
+    AppWindow.RenderFrame();
     SDL_Delay(10);
   }
 }

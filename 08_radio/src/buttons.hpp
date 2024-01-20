@@ -1,8 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "application.hpp"
-
 
 class Button {
 public:
@@ -17,9 +15,8 @@ using RadioStationInfo = std::map<const char*, std::string>;
 
 class playRadioButton : public Button {
 public:
-  playRadioButton(Application* App,const RadioStationInfo* Channel, int x, int y) :
-    app{App}, 
-    SDLWindowSurface{app->GetWindowSurface()},
+  playRadioButton(Window* Window, const RadioStationInfo* Channel, int x, int y) :
+    window{Window}, 
     channel{Channel},
     m_x{x}, m_y{y}
   {
@@ -32,7 +29,6 @@ public:
       Event->button.button == SDL_BUTTON_LEFT &&
       isHovered
     ) {
-      //app->Quit();
 
       getChannelData();
 
@@ -64,8 +60,8 @@ public:
   }
 
 private:
-  Application* app;
-  SDL_Surface* SDLWindowSurface;
+  Window* window;
+  SDL_Surface* SDLWindowSurface = window->GetSurface();
   const RadioStationInfo *channel;
 
   int m_x, m_y;
@@ -99,16 +95,17 @@ private:
 
 };
 
-// ############################## JENRES BUTTON #############################
+// ############################## GENRES BUTTON #############################
 
 using GenreInfo = std::pair<const char*, const char*>;
+class ChannelsGrid;
 
 class genreButton : public Button {
 public:
-  genreButton(Application* App, const GenreInfo* Genre, int y) :
-    app{App}, 
-    SDLWindowSurface{app->GetWindowSurface()},
+  genreButton(Window* Window, const GenreInfo* Genre, ChannelsGrid *Channels, int y) :
+    window{Window}, 
     genre{Genre},
+    channels{Channels},
     m_y{y}
   {
     Update();
@@ -120,11 +117,8 @@ public:
       Event->button.button == SDL_BUTTON_LEFT &&
       isHovered
     ) {
-      //app->Quit();
 
       getGenreData();
-      // app->updateChannels(getGenreData().second);
-
       return true;
 
     } else if (Event->type == SDL_MOUSEMOTION) {
@@ -150,9 +144,10 @@ public:
   }
 
 private:
-  Application* app;
-  SDL_Surface* SDLWindowSurface;
+  Window* window;
+  SDL_Surface* SDLWindowSurface = window->GetSurface();
   const GenreInfo *genre;
+  ChannelsGrid* channels;
 
   int m_x = 50;
   int m_y;

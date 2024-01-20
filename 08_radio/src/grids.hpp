@@ -5,13 +5,13 @@
 #include "json.hpp"
 
 //############################# CHANNELS GRID ###############################
-
+using GenreInfo = std::pair<const char*, const char*>;
 using RadioStationInfo = std::map<const char*, std::string>;
 
 class ChannelsGrid {
 public:
-    ChannelsGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
-        fillGrid(defaultURL);
+    ChannelsGrid( Window* Window ) : window{Window} {
+        // fillGrid(defaultURL);
     }
 
     void fillGrid(const char* url) {
@@ -21,7 +21,7 @@ public:
         auto y = start_y;
 
         for (const auto &channel: channels) {
-            buttons.push_back({ app, &channel, x, y });
+            buttons.push_back({ window, &channel, x, y });
 
             x += (distance_x + size);
             if (x >= (770 - size)) {
@@ -34,16 +34,25 @@ public:
                 }
             }
         }
-
-        for (auto &button: buttons) {
-            ui->SubscribeToEvents(&button);
-        }
     }
+
+    bool HandleEvent(const SDL_Event* Event) {
+        for (auto &button : buttons) {
+            auto but = &button;
+            if (but->HandleEvent(Event)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 private:
  
-    Application *app;
-    Layer *ui;
+    Window* window;
+    size_t urlsCount = 30;
+
     std::vector<RadioStationInfo> channels;
     std::vector<playRadioButton> buttons;
     
@@ -55,18 +64,14 @@ private:
 
     int size = 90;
 
-    size_t MaxURLsCount = 30;
-    const char* defaultURL = "http://all.api.radio-browser.info/json/stations/bycountry/russia";
-
     const std::vector<RadioStationInfo> getChannels(const char* url) {
-
         http::Request request{url};
         const auto response = request.send("GET");
 
         nlohmann::json m_json = nlohmann::json::parse(std::string{response.body.begin(), response.body.end()});
 
         std::vector<RadioStationInfo> results;
-        for (size_t i = 0; i < MaxURLsCount; ++i) {
+        for (size_t i = 0; i < urlsCount; ++i) {
             results.push_back(
                 {
                     { "name", m_json[i]["name"].template get<std::string>() },
@@ -82,11 +87,12 @@ private:
 
 //############################# CHANNELS GRID ###############################
 
-using GenreInfo = std::pair<const char*, const char*>;
-
 class GenresGrid {
 public:
-    GenresGrid( Application *App, Layer *UI ) : app{App}, ui{UI} {
+    GenresGrid( Window* Window, ChannelsGrid* Channels ) : 
+        window{Window},
+        channels{Channels} 
+    {
         fillGrid();
     }
 
@@ -94,20 +100,35 @@ public:
         auto y = start_y;
 
         for (const auto &genre: genreUrls) {
-            buttons.push_back({ app, &genre, y });
+            // buttons.push_back({ app, &genre, y });
+            buttons.push_back({ window, &genre, channels, y });
 
             y += (distance_y + size);
         }
 
-        for (auto &button: buttons) {
-            ui->SubscribeToEvents(&button);
+        // for (auto &button: buttons) {
+        //     ui->SubscribeToEvents(&button);
+        // }
+
+        // channels->fillGrid(defaultURL);
+    }
+
+    bool HandleEvent(const SDL_Event* Event) {
+        for (auto &button : buttons) {
+            auto but = &button;
+
+            if (but->HandleEvent(Event)) {
+                return true;
+            }
         }
+
+        return false;
     }
 
 private:
  
-    Application *app;
-    Layer *ui;
+    Window* window;
+    ChannelsGrid* channels;
     std::vector<genreButton> buttons;
     
     int start_x = 50;
@@ -116,6 +137,8 @@ private:
     int distance_y = 40;
 
     int size = 50;
+    const char* defaultURL = "http://all.api.radio-browser.info/json/stations/bycountry/russia";
+
 
     const std::vector<std::pair<const char*, const char*>> genreUrls {
         { "Джаз",   "https://nl1.api.radio-browser.info/json/stations/bytag/jaz" },

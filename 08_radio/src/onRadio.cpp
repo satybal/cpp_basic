@@ -3,19 +3,14 @@
 #include <map>
 
 #include "window.hpp"
-#include "layer.hpp"
-#include "grids.hpp"
+#include "channels.hpp"
+#include "genres.hpp"
 
 int main() {
 
-  Window GameWindow;
-  Layer UI;
-  ChannelsGrid Channels;
-  GenresGrid Genres;
-
-  Genres.fillGrid( &GameWindow, &UI );
-  Channels.fillGrid(Channels.getDefaultUrl(), &GameWindow, &UI);
-
+  Window AppWindow;
+  ChannelsGrid Channels { &AppWindow };
+  GenresGrid Genres { &AppWindow, &Channels };
 
   SDL_Event Event;
 
@@ -27,13 +22,17 @@ int main() {
         return 0;
       }
 
-      if (UI.HandleEvent(&Event)) {
-        continue;
+      if ( Genres.HandleEvent(&Event)) {
+        continue;;
+      }
+
+      if ( Channels.HandleEvent(&Event)) {
+        continue;;
       }
 
     }
 
-    GameWindow.RenderFrame();
+    AppWindow.RenderFrame();
     SDL_Delay(10);
   }
 }
